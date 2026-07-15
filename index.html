@@ -1,0 +1,3327 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>為歡幾何</title>
+<meta name="theme-color" content="#0C1230">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="為歡幾何">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Ma+Shan+Zheng&family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Caveat:wght@400;500;600;700&family=Iansui&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root{
+    --wax: #7A1F1F;
+    --parchment: #E3CEA0;
+    --parchment-edge: #C7A968;
+    --parchment-card: #EFE0B8;
+    --parchment-card-2: #E9D8AC;
+    --ink: #3A2A16;
+    --ink-soft: #6E5730;
+    --ink-faint: #9C875C;
+    --gold: #8B6B23;
+    --gold-dark: #6B4F16;
+    --rust: #8B3A2E;
+    --line-soft: #CBB27E;
+    --sky-deep: #0C1230;
+    --sky-mid: #171B3E;
+    --sky-title: #F3E7C4;
+    --sky-text: #C9BEA6;
+    --sky-faint: #948B9E;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background-color:var(--sky-deep);
+    background-image:
+      radial-gradient(1.6px 1.6px at 10% 12%, rgba(255,255,255,0.9), transparent 60%),
+      radial-gradient(1.2px 1.2px at 24% 34%, rgba(255,255,255,0.7), transparent 60%),
+      radial-gradient(1.8px 1.8px at 38% 8%, rgba(255,255,255,0.85), transparent 60%),
+      radial-gradient(1.3px 1.3px at 52% 28%, rgba(255,255,255,0.65), transparent 60%),
+      radial-gradient(1.6px 1.6px at 68% 15%, rgba(255,255,255,0.8), transparent 60%),
+      radial-gradient(1.2px 1.2px at 80% 40%, rgba(255,255,255,0.6), transparent 60%),
+      radial-gradient(1.9px 1.9px at 92% 10%, rgba(255,255,255,0.85), transparent 60%),
+      radial-gradient(1.4px 1.4px at 15% 60%, rgba(255,255,255,0.7), transparent 60%),
+      radial-gradient(1.7px 1.7px at 30% 78%, rgba(255,255,255,0.8), transparent 60%),
+      radial-gradient(1.2px 1.2px at 46% 55%, rgba(255,255,255,0.6), transparent 60%),
+      radial-gradient(1.6px 1.6px at 60% 72%, rgba(255,255,255,0.75), transparent 60%),
+      radial-gradient(1.3px 1.3px at 75% 62%, rgba(255,255,255,0.65), transparent 60%),
+      radial-gradient(1.8px 1.8px at 88% 82%, rgba(255,255,255,0.8), transparent 60%),
+      radial-gradient(1.2px 1.2px at 6% 90%, rgba(255,255,255,0.6), transparent 60%),
+      radial-gradient(1.5px 1.5px at 95% 55%, rgba(255,255,255,0.7), transparent 60%),
+      radial-gradient(circle at 84% 8%, rgba(243,231,196,0.20), transparent 12%),
+      radial-gradient(circle at 20% 20%, rgba(120,90,180,0.16), transparent 32%),
+      radial-gradient(circle at 78% 70%, rgba(70,90,160,0.18), transparent 38%),
+      linear-gradient(180deg, var(--sky-deep) 0%, var(--sky-mid) 55%, var(--sky-deep) 100%);
+    color:var(--ink);
+    font-family:"Iansui","Noto Serif TC",cursive;
+    min-height:100vh;
+    padding:48px 20px 90px;
+  }
+  .wrap{max-width:760px;margin:0 auto;position:relative;z-index:2;}
+
+  .snowfall{
+    position:fixed; inset:0; overflow:hidden;
+    pointer-events:none; z-index:1;
+  }
+  .snowflake{
+    position:absolute; top:-8vh;
+    color:#fff;
+    text-shadow:0 0 6px rgba(255,255,255,0.6);
+    user-select:none;
+    animation-name:snowFall;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+    will-change:transform, opacity;
+  }
+  @keyframes snowFall{
+    0%{ transform:translate3d(0,-8vh,0) rotate(0deg); opacity:0; }
+    8%{ opacity:var(--op,0.85); }
+    92%{ opacity:var(--op,0.85); }
+    100%{ transform:translate3d(var(--sway,20px),108vh,0) rotate(360deg); opacity:0; }
+  }
+  @media (max-width:520px){
+    .snowflake{ text-shadow:0 0 4px rgba(255,255,255,0.5); }
+  }
+
+  header{margin-bottom:44px;position:relative; text-align:center;}
+  .eyebrow{
+    font-size:12.5px; letter-spacing:0.35em; color:var(--sky-text);
+    margin-bottom:6px; font-weight:600; opacity:0.85;
+  }
+  h1{
+    font-family:"Iansui","Noto Serif TC",cursive;
+    font-weight:400;
+    font-size:64px;
+    margin:0 0 6px;
+    letter-spacing:0.1em;
+    color:var(--sky-title);
+    text-shadow:0 0 18px rgba(243,231,196,0.35), 0 2px 10px rgba(0,0,0,0.5);
+  }
+  .sub{
+    font-size:14.5px; color:var(--sky-text); line-height:1.9;
+    max-width:440px; margin:0 auto; font-family:"Iansui","Noto Serif TC",cursive; font-style:italic;
+  }
+  .quillrule{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    margin:20px 0 0;
+  }
+  .quillrule .line{ width:70px; height:1px; background:linear-gradient(90deg, transparent, var(--sky-text), transparent); opacity:0.7; }
+  .quillrule svg{ width:20px; height:20px; stroke:var(--sky-text); fill:none; opacity:0.75; }
+
+  .floating-quill{
+    position:absolute; top:-18px; right:4%;
+    width:46px; height:46px;
+    pointer-events:none;
+    filter:drop-shadow(0 10px 14px rgba(0,0,0,0.5)) drop-shadow(0 0 10px rgba(243,231,196,0.3));
+    animation: quillFloat 5.5s ease-in-out infinite;
+    opacity:0.95;
+  }
+  .floating-quill svg{ width:100%; height:100%; fill:#E7D8A8; stroke:#8B6B23; stroke-width:0.6; }
+  .floating-quill .spark{
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background:#F3E7C4; opacity:0;
+    animation: sparkTwinkle 3.2s ease-in-out infinite;
+  }
+  .floating-quill .spark.s1{ top:6px; left:-4px; animation-delay:.2s; }
+  .floating-quill .spark.s2{ top:26px; left:2px; animation-delay:1.3s; }
+  .floating-quill .spark.s3{ top:14px; left:34px; animation-delay:2.1s; }
+  @keyframes quillFloat{
+    0%,100%{ transform:translateY(0px) rotate(-8deg); }
+    50%{ transform:translateY(-13px) rotate(-3deg); }
+  }
+  @keyframes sparkTwinkle{
+    0%,100%{ opacity:0; transform:scale(0.6); }
+    50%{ opacity:0.9; transform:scale(1.15); }
+  }
+  @keyframes floatCard{
+    0%,100%{ transform:translateY(0px); }
+    50%{ transform:translateY(-9px); }
+  }
+  @media (max-width:520px){
+    .floating-quill{ width:34px; height:34px; top:-10px; right:2%; }
+  }
+
+  .composer-wrap{ margin-bottom:56px; animation: floatCard 7s ease-in-out infinite; }
+  .composer{
+    background:var(--parchment-card);
+    border:1px solid var(--parchment-edge);
+    padding:32px 30px 24px;
+    box-shadow:0 2px 0 rgba(255,255,255,0.25) inset, 0 30px 50px -20px rgba(0,0,0,0.65), 0 0 40px -10px rgba(243,231,196,0.12);
+    position:relative;
+    clip-path: polygon(0.6% 2.5%, 4% 0.3%, 96% 0.8%, 99.3% 3%, 99.7% 30%, 100% 62%, 98.6% 96.5%, 95.5% 99.6%, 5% 99.2%, 1% 97%, 1.6% 60%, 0% 28%);
+  }
+  .composer-top{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:16px; flex-wrap:wrap; gap:10px;
+  }
+  .date-field{
+    display:flex; align-items:center; gap:8px;
+    font-family:"Iansui","Noto Serif TC",cursive; font-weight:600; color:var(--gold-dark);
+    font-size:16px;
+  }
+  .date-field input[type=date]{
+    border:none; background:transparent; font-family:inherit; font-size:15px;
+    color:var(--gold-dark); font-weight:600; cursor:pointer;
+  }
+  .count-tag{
+    font-size:12.5px; color:var(--ink-faint); letter-spacing:0.04em; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+
+  textarea{
+    width:100%;
+    min-height:196px;
+    resize:vertical;
+    border:1px solid var(--line-soft);
+    border-radius:2px;
+    background-color:#F6EAC4;
+    background-image: repeating-linear-gradient(107deg, rgba(110,75,25,0.03) 0px, transparent 2px, transparent 6px);
+    padding:16px 18px;
+    font-family:"Iansui","Noto Serif TC",cursive;
+    font-size:17px;
+    line-height:1.85;
+    color:var(--ink);
+    letter-spacing:0.02em;
+    outline:none;
+  }
+  textarea:focus{border-color:var(--gold);}
+  textarea::placeholder{color:var(--ink-faint); font-family:"Iansui","Noto Serif TC",cursive; font-style:italic; font-size:15px;}
+
+  .dropzone{
+    margin-top:14px;
+    border:1.5px dashed var(--parchment-edge);
+    border-radius:2px;
+    padding:16px;
+    text-align:center;
+    color:var(--ink-faint);
+    font-size:13.5px;
+    font-family:"Iansui","Noto Serif TC",cursive;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .dropzone.drag{border-color:var(--rust); background:rgba(139,58,46,0.06); color:var(--rust);}
+  .dropzone input{display:none;}
+
+  .preview-row{
+    display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;
+  }
+  .preview-thumb{
+    position:relative; width:64px; height:64px; border-radius:2px; overflow:hidden;
+    border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,0.25);
+  }
+  .preview-thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+  .preview-thumb button{
+    position:absolute; top:-2px; right:-2px; width:18px; height:18px;
+    border-radius:50%; border:none; background:var(--rust); color:#fff;
+    font-size:11px; line-height:1; cursor:pointer;
+  }
+
+  .composer-bottom{
+    display:flex; align-items:center; justify-content:flex-end; gap:18px;
+    margin-top:-24px; padding-right:8px; position:relative; z-index:2;
+  }
+
+  .wax-picker{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .wax-picker-row{
+    display:flex; align-items:center; gap:9px;
+  }
+  .wax-trigger{
+    width:30px; height:30px; border-radius:48% 52% 51% 49% / 52% 48% 53% 47%;
+    border:1.5px solid rgba(255,255,255,0.5); padding:0; cursor:pointer;
+    box-shadow:0 3px 6px -1px rgba(0,0,0,0.45), inset 0 1px 2px rgba(255,255,255,0.35);
+    background: conic-gradient(from 210deg at 42% 58%, var(--trig-a,#33578F), var(--trig-b,#33578F), var(--trig-a,#33578F));
+    transition: transform .15s;
+  }
+  .wax-trigger:hover{transform:scale(1.08);}
+  .wax-dice{
+    width:22px; height:22px; border-radius:50%; border:1px dashed var(--parchment-edge);
+    background:transparent; color:var(--ink-faint); font-size:11px; cursor:pointer;
+    opacity:0.55; transition:opacity .2s, transform .2s;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .wax-dice:hover{opacity:1; transform:rotate(15deg) scale(1.12);}
+  .wax-picker-label{font-size:10.5px; color:var(--ink-faint); font-family:"Iansui","Noto Serif TC",cursive; letter-spacing:0.05em;}
+
+  .x-share-toggle{
+    display:flex; align-items:center; gap:6px; cursor:pointer;
+    font-size:12.5px; color:var(--ink-soft); font-family:"Iansui","Noto Serif TC",cursive;
+    letter-spacing:0.03em; user-select:none; margin-right:2px;
+  }
+  .x-share-toggle input{ accent-color: var(--wax); width:15px; height:15px; cursor:pointer; }
+  .x-share-toggle span{ font-size:13.5px; }
+
+  .entry-share-x, .entry-wax-btn{
+    background:transparent; border:1px solid var(--line-soft); color:var(--ink-soft);
+    border-radius:2px; padding:4px 10px; font-size:12px; cursor:pointer;
+    font-family:"Iansui","Noto Serif TC",cursive; letter-spacing:0.03em;
+    transition:border-color .15s, color .15s;
+  }
+  .entry-share-x:hover{ border-color:var(--rust); color:var(--rust); }
+  .entry-wax-btn:hover{ border-color:var(--gold); color:var(--gold-dark); }
+  .entry-wax-btn .wax-btn-dot{
+    display:inline-block; width:9px; height:9px; border-radius:50%;
+    margin-right:5px; vertical-align:-1px;
+    border:1px solid rgba(0,0,0,0.25);
+  }
+
+  .color-picker-modal{
+    background:#4A4750; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:26px 24px 22px;
+    max-width:380px; width:100%;
+    box-shadow:0 20px 46px -10px rgba(0,0,0,0.6);
+  }
+  .color-picker-modal h3{
+    font-family:"Iansui","Noto Serif TC",cursive; font-size:22px; margin:0 0 20px; color:#F3EFE6; font-weight:400;
+  }
+  .color-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:14px 16px;
+    margin-bottom:20px;
+  }
+  .color-swatch{
+    width:100%; aspect-ratio:1; border:none; cursor:pointer;
+    border-radius:46% 54% 52% 48% / 50% 46% 54% 50%;
+    box-shadow:0 4px 8px -2px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3);
+    outline:2.5px solid transparent; outline-offset:3px;
+    transition: outline-color .15s, transform .15s;
+  }
+  .color-swatch:hover{transform:scale(1.05);}
+  .color-swatch.active{outline-color:#F3EFE6;}
+  .color-picker-footer{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:22px; flex-wrap:wrap; gap:12px;
+  }
+  .color-custom-link{
+    background:none; border:none; cursor:pointer;
+    color:#8FB7E8; font-size:15px; font-family:"Iansui","Noto Serif TC",cursive;
+    padding:0; text-decoration:none;
+  }
+  .color-custom-link:hover{text-decoration:underline;}
+  .color-selected-preview{
+    display:flex; align-items:center; gap:10px;
+  }
+  .color-selected-preview span:first-child{
+    color:#F3EFE6; font-size:14px; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .color-selected-swatch{
+    width:34px; height:34px; border-radius:5px;
+    border:2px solid rgba(255,255,255,0.25);
+    box-shadow:0 2px 5px -1px rgba(0,0,0,0.5);
+    display:inline-block;
+  }
+  .color-picker-actions{
+    display:flex; justify-content:flex-end; gap:26px;
+  }
+  .color-picker-actions button{
+    background:none; border:none; cursor:pointer;
+    font-size:15px; color:#8FB7E8; font-family:"Iansui","Noto Serif TC",cursive; font-weight:600;
+    padding:4px 2px;
+  }
+  .color-picker-actions button:hover{text-decoration:underline;}
+
+  .custom-color-panel{ margin:-4px 0 20px; }
+  .csq{
+    position:relative; width:100%; height:140px; border-radius:6px; overflow:hidden;
+    cursor:crosshair; margin-bottom:14px; line-height:0; touch-action:none;
+    box-shadow:0 1px 3px rgba(0,0,0,0.4);
+  }
+  .csq canvas{ width:100%; height:100%; display:block; }
+  .csq-thumb{
+    position:absolute; width:14px; height:14px; border-radius:50%;
+    border:2px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
+    transform:translate(-50%,-50%); pointer-events:none;
+  }
+  .hue-strip{
+    position:relative; width:100%; height:14px; border-radius:7px; margin-bottom:16px;
+    cursor:pointer; touch-action:none;
+    background:linear-gradient(90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);
+    box-shadow:0 1px 3px rgba(0,0,0,0.4);
+  }
+  .hue-thumb{
+    position:absolute; top:50%; width:16px; height:16px; border-radius:50%;
+    border:2px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
+    transform:translate(-50%,-50%); pointer-events:none;
+  }
+  .hex-row{
+    display:flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2);
+    border-radius:5px; padding:7px 10px;
+  }
+  .hex-row span{ color:#C9BEA6; font-family:"Iansui","Noto Serif TC",cursive; font-size:14px; }
+  .hex-input{
+    background:none; border:none; outline:none; width:100%;
+    color:#F3EFE6; font-family:"Iansui","Noto Serif TC",cursive; font-size:14px;
+    letter-spacing:0.05em; text-transform:uppercase;
+  }
+
+
+  .seal-btn{
+    position:relative;
+    width:84px; height:84px;
+    border:none; cursor:pointer;
+    border-radius:48% 52% 51% 49% / 52% 48% 53% 47%;
+    background: conic-gradient(from 210deg at 42% 58%, var(--wax-a, #7A1F1F), var(--wax-b, #7A1F1F), var(--wax-a, #7A1F1F));
+    box-shadow:0 10px 18px -8px rgba(0,0,0,0.55), inset 0 2px 3px rgba(255,255,255,0.35), inset 0 -4px 7px rgba(0,0,0,0.32);
+    transform:rotate(-5deg);
+    transition:transform .18s ease;
+  }
+  .seal-btn::before{
+    content:'';
+    position:absolute; left:50%; bottom:-10px; transform:translateX(-50%);
+    width:15px; height:17px;
+    border-radius:42% 58% 56% 44% / 58% 54% 46% 42%;
+    background: conic-gradient(from 210deg at 42% 58%, var(--wax-a, #7A1F1F), var(--wax-b, #7A1F1F), var(--wax-a, #7A1F1F));
+    box-shadow:inset 0 1px 2px rgba(255,255,255,0.3);
+  }
+  .seal-btn svg{
+    position:relative; z-index:1;
+    width:58px; height:58px;
+    fill:none;
+    stroke:rgba(0,0,0,0.42);
+    stroke-width:0.5;
+    stroke-linecap:round;
+    filter:drop-shadow(-1px -1px 0 rgba(255,255,255,0.3)) drop-shadow(1px 1.5px 1px rgba(0,0,0,0.4));
+  }
+  .seal-btn:hover{transform:rotate(0deg) scale(1.06);}
+  .seal-btn:active{transform:rotate(0deg) scale(0.95);}
+  .seal-btn:disabled{opacity:0.45; cursor:not-allowed;}
+
+  .search-wrap{
+    position:relative;
+    margin-bottom:22px;
+  }
+  .search-wrap svg{
+    position:absolute; left:13px; top:50%; transform:translateY(-50%);
+    width:15px; height:15px; stroke:var(--ink-faint); fill:none;
+  }
+  #searchInput{
+    width:100%;
+    padding:12px 38px 12px 38px;
+    border:1px solid var(--parchment-edge);
+    border-radius:2px;
+    background:var(--parchment-card);
+    font-family:"Iansui","Noto Serif TC",cursive;
+    font-size:15px;
+    color:var(--ink);
+    outline:none;
+  }
+  #searchInput:focus{border-color:var(--gold);}
+  #searchInput::placeholder{color:var(--ink-faint); font-style:italic;}
+  .search-clear{
+    position:absolute; right:8px; top:50%; transform:translateY(-50%);
+    background:none; border:none; color:var(--ink-faint); font-size:13px;
+    cursor:pointer; padding:4px; display:none;
+  }
+  .search-clear.show{display:block;}
+  .search-clear:hover{color:var(--rust);}
+  .search-result-count{
+    font-size:12.5px; color:var(--sky-faint); margin:-10px 0 20px 2px; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+
+  .entries-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:20px;
+  }
+  .entries-head h2{
+    font-family:"Iansui","Noto Serif TC",cursive; font-size:16px; letter-spacing:0.2em;
+    font-weight:600; margin:0;
+    color:var(--sky-title);
+    text-shadow:0 1px 0 rgba(0,0,0,0.35);
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,0.25));
+    position:relative;
+    opacity:0.92;
+  }
+  .clear-link{
+    font-size:12.5px; color:var(--sky-faint); background:none; border:none; cursor:pointer;
+    text-decoration:underline; text-underline-offset:3px; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .clear-link:hover{color:var(--rust);}
+
+  .empty-state{
+    text-align:center; padding:70px 20px; color:var(--sky-faint);
+  }
+  .empty-state .glyph{
+    font-family:"Iansui",serif; font-size:46px; color:var(--sky-text);
+    margin-bottom:14px; opacity:0.7;
+  }
+  .empty-state p{font-size:14px; line-height:1.9; margin:0; font-family:"Iansui","Noto Serif TC",cursive; font-style:italic;}
+
+  .entry{
+    position:relative;
+    margin-bottom:44px;
+    animation: floatCard 7s ease-in-out infinite;
+  }
+  .entry-paper{
+    background:var(--parchment-card-2);
+    border:1px solid var(--parchment-edge);
+    padding:32px 28px 24px;
+    background-image: repeating-linear-gradient(112deg, rgba(110,75,25,0.03) 0px, transparent 2px, transparent 6px);
+    clip-path: polygon(0.4% 3%, 3.5% 0.4%, 96.5% 0.9%, 99.5% 2.6%, 99.8% 32%, 100% 64%, 98.4% 97%, 95% 99.7%, 4.5% 99.3%, 0.8% 96.8%, 1.3% 58%, 0% 30%);
+    box-shadow:0 26px 44px -18px rgba(0,0,0,0.6), 0 0 34px -12px rgba(243,231,196,0.10);
+  }
+  .stamp{
+    position:absolute; top:-20px; right:26px;
+    width:78px; height:78px;
+    border-radius:48% 52% 51% 49% / 52% 48% 53% 47%;
+    background: conic-gradient(from 210deg at 42% 58%, var(--wax-a, #7A1F1F), var(--wax-b, #7A1F1F), var(--wax-a, #7A1F1F));
+    box-shadow:0 8px 14px -6px rgba(0,0,0,0.5), inset 0 2px 3px rgba(255,255,255,0.3), inset 0 -4px 6px rgba(0,0,0,0.3);
+    color:#F2E3B8;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transform:rotate(5deg);
+    line-height:1.1;
+    padding:4px;
+    z-index:2;
+    cursor:pointer;
+    transition:transform .18s;
+  }
+  .stamp:hover{ transform:rotate(0deg) scale(1.06); }
+  .stamp:active{ transform:rotate(0deg) scale(0.94); }
+  .stamp::before{
+    content:'';
+    position:absolute; left:50%; bottom:-9px; transform:translateX(-50%);
+    width:13px; height:15px;
+    border-radius:42% 58% 56% 44% / 58% 54% 46% 42%;
+    background: conic-gradient(from 210deg at 42% 58%, var(--wax-a, #7A1F1F), var(--wax-b, #7A1F1F), var(--wax-a, #7A1F1F));
+    box-shadow:inset 0 1px 2px rgba(255,255,255,0.3);
+  }
+  .stamp .md{font-family:"Iansui",cursive; font-weight:700; font-size:18px; text-shadow:1px 1px 1px rgba(0,0,0,0.4);}
+  .stamp .y{font-family:"Iansui","Noto Serif TC",cursive; font-size:10px; letter-spacing:0.06em; text-shadow:1px 1px 1px rgba(0,0,0,0.3);}
+  .stamp .w{font-family:"Iansui","Noto Serif TC",cursive; font-size:9px; margin-top:1px; letter-spacing:0.08em; opacity:0.9;}
+  .stamp-pattern{
+    position:absolute; inset:0; width:100%; height:100%;
+    z-index:-1;
+    fill:none; stroke:#F2E3B8; stroke-width:0.5; stroke-linecap:round;
+    opacity:0.3;
+    pointer-events:none;
+  }
+
+  .entry-text{
+    font-family:"Iansui","Noto Serif TC",cursive;
+    font-size:16.5px;
+    line-height:1.95;
+    color:var(--ink);
+    white-space:pre-wrap;
+    max-width:88%;
+    margin-bottom:16px;
+  }
+
+  .entry-images{
+    display:flex; gap:16px; flex-wrap:wrap; margin-top:6px;
+  }
+  .photo{
+    background:#fbf6e6; padding:8px 8px 22px; box-shadow:0 6px 16px -6px rgba(0,0,0,0.35);
+    width:132px; cursor:pointer; transition:transform .15s;
+  }
+  .photo:hover{ transform:scale(1.03) rotate(0deg) !important; }
+  .photo img{width:100%; height:112px; object-fit:cover; display:block;}
+  .entry-images .photo:nth-child(odd){transform:rotate(-2.5deg);}
+  .entry-images .photo:nth-child(even){transform:rotate(2deg);}
+
+  .entry-actions{
+    display:flex; justify-content:flex-end; gap:16px; margin-top:14px;
+  }
+  .entry-quote-btn, .entry-del{
+    background:none; border:none; color:var(--ink-faint);
+    font-size:12px; cursor:pointer; text-decoration:underline;
+    text-underline-offset:3px; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .entry-quote-btn:hover{color:var(--gold-dark);}
+  .entry-del:hover{color:var(--rust);}
+
+  .entry-quote.eq-link{cursor:pointer; transition:background .15s, border-color .15s;}
+  .entry-quote.eq-link:hover{background:rgba(139,107,35,0.14); border-left-color:var(--gold);}
+
+  @keyframes entryFlash{
+    0%{box-shadow:0 0 0 0 rgba(139,107,35,0);}
+    20%{box-shadow:0 0 0 4px rgba(139,107,35,0.4);}
+    100%{box-shadow:0 0 0 0 rgba(139,107,35,0);}
+  }
+  .entry-flash{animation:entryFlash 1.6s ease;}
+
+  .loading{text-align:center; padding:60px; color:var(--sky-faint); font-size:14px; font-family:"Iansui","Noto Serif TC",cursive; font-style:italic;}
+
+  .modal-bg{
+    position:fixed; inset:0; background:rgba(43,32,18,0.5);
+    display:flex; align-items:center; justify-content:center; z-index:50;
+    padding:20px;
+  }
+
+  .image-lightbox{
+    display:none; position:fixed; inset:0; z-index:60;
+    background:rgba(10,8,4,0.88);
+    align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .image-lightbox.show{ display:flex; }
+  .lightbox-inner{
+    max-width:min(92vw, 900px); max-height:90vh;
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+  }
+  .lightbox-inner img{
+    max-width:100%; max-height:70vh; object-fit:contain;
+    border:2px solid rgba(255,255,255,0.15);
+    box-shadow:0 20px 50px -10px rgba(0,0,0,0.7);
+    background:#111;
+  }
+  .lightbox-note{
+    font-family:"Iansui","Noto Serif TC",cursive; font-size:13px;
+    color:#C9BEA6; letter-spacing:0.03em; opacity:0.85; text-align:center;
+  }
+  .lightbox-actions{ display:flex; gap:12px; }
+  .lightbox-actions button{
+    font-family:"Iansui","Noto Serif TC",cursive; font-size:14px;
+    padding:8px 18px; border-radius:2px; cursor:pointer;
+    border:1px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.08);
+    color:#F3EFE6; letter-spacing:0.04em; transition:background .15s, border-color .15s;
+  }
+  .lightbox-actions button:hover{ background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.5); }
+  #lightboxDownload{ border-color:var(--wax, #B0705F); }
+  #lightboxDownload:hover{ background:rgba(122,31,31,0.35); }
+  .modal{
+    background:var(--parchment-card); border:1px solid var(--parchment-edge); border-radius:2px; padding:28px;
+    max-width:340px; text-align:center;
+    box-shadow:0 20px 40px -10px rgba(0,0,0,0.5);
+  }
+  .modal p{font-size:14.5px; color:var(--ink); line-height:1.8; margin:0 0 20px; font-family:"Iansui","Noto Serif TC",cursive;}
+  .modal-actions{display:flex; gap:10px; justify-content:center;}
+  .modal-actions button{
+    padding:9px 18px; border-radius:2px; border:1px solid var(--parchment-edge);
+    background:#fbf6e6; font-size:13.5px; cursor:pointer; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .modal-actions .confirm{background:var(--rust); color:#fff; border-color:var(--rust);}
+
+  .toast{
+    position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(12px);
+    background:var(--parchment-card); border:1px solid var(--parchment-edge);
+    color:var(--ink); font-family:"Iansui","Noto Serif TC",cursive; font-size:14px; line-height:1.7;
+    padding:12px 20px; border-radius:2px; max-width:min(86vw, 380px); text-align:center;
+    box-shadow:0 20px 40px -10px rgba(0,0,0,0.55);
+    z-index:80; opacity:0; pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .quote-trigger-row{
+    display:flex; justify-content:flex-start; margin:12px 0 2px;
+  }
+  .quote-trigger{
+    background:none; border:none; cursor:pointer;
+    font-size:12.5px; color:var(--gold-dark);
+    text-decoration:underline; text-underline-offset:3px;
+    padding:2px 0; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .quote-trigger:hover{color:var(--rust);}
+
+  .quote-preview{
+    position:relative;
+    border-left:3px solid var(--gold);
+    background:rgba(139,107,35,0.08);
+    padding:10px 34px 10px 14px;
+    margin-bottom:10px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:1.7;
+  }
+  .quote-preview .qp-date{
+    font-weight:600; color:var(--gold-dark); font-size:12px; margin-bottom:3px;
+    font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .quote-preview .qp-text{
+    font-family:"Iansui","Noto Serif TC",cursive; font-style:italic;
+  }
+  .quote-preview .qp-remove{
+    position:absolute; top:8px; right:8px;
+    background:none; border:none; color:var(--ink-faint);
+    cursor:pointer; font-size:13px;
+  }
+  .quote-preview .qp-remove:hover{color:var(--rust);}
+
+  .entry-quote{
+    border-left:3px solid var(--parchment-edge);
+    padding:8px 14px;
+    margin-bottom:14px;
+    background:rgba(110,75,25,0.08);
+    font-size:14px;
+    color:var(--ink-soft);
+    line-height:1.75;
+  }
+  .entry-quote .eq-date{
+    font-size:11.5px; color:var(--ink-faint); margin-bottom:3px;
+    letter-spacing:0.04em; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .entry-quote .eq-text{
+    font-family:"Iansui","Noto Serif TC",cursive; font-style:italic;
+  }
+
+  .picker-modal{
+    background:var(--parchment-card); border:1px solid var(--parchment-edge); border-radius:2px; padding:22px;
+    max-width:420px; width:100%;
+    max-height:70vh; display:flex; flex-direction:column;
+    box-shadow:0 20px 40px -10px rgba(0,0,0,0.5);
+  }
+  .picker-modal h3{
+    font-family:"Iansui","Noto Serif TC",cursive; font-size:20px; margin:0 0 14px; color:var(--ink); font-weight:400;
+  }
+  .picker-search-wrap{margin-bottom:10px;}
+  .picker-search{
+    width:100%;
+    padding:9px 12px;
+    border:1px solid var(--parchment-edge);
+    border-radius:2px;
+    background:var(--parchment);
+    font-family:"Iansui","Noto Serif TC",cursive;
+    font-size:14.5px;
+    color:var(--ink);
+    outline:none;
+  }
+  .picker-search:focus{border-color:var(--gold);}
+  .picker-search::placeholder{color:var(--ink-faint); font-style:italic;}
+  .picker-list{
+    overflow-y:auto; flex:1; margin-bottom:10px;
+  }
+  .picker-item{
+    padding:10px 8px; border-bottom:1px solid var(--parchment-edge);
+    cursor:pointer; text-align:left;
+  }
+  .picker-item:hover{background:rgba(139,107,35,0.10);}
+  .picker-item .pi-date{
+    font-family:"Iansui","Noto Serif TC",cursive; font-weight:600; font-size:13px; color:var(--gold-dark);
+    margin-bottom:3px;
+  }
+  .picker-item .pi-text{
+    font-size:13px; color:var(--ink-soft); font-family:"Iansui","Noto Serif TC",cursive;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .picker-empty{color:var(--ink-faint); font-size:13.5px; text-align:center; padding:30px 0; font-family:"Iansui","Noto Serif TC",cursive;}
+  .picker-cancel{
+    align-self:center; padding:8px 20px; border-radius:2px; border:1px solid var(--parchment-edge);
+    background:#fbf6e6; font-size:13px; cursor:pointer; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+
+  @media (max-width:520px){
+    h1{font-size:48px;}
+    .entry-text{max-width:100%;}
+    .stamp{width:62px; height:62px; top:-14px; right:16px;}
+    .stamp .md{font-size:14px;} .stamp .y{font-size:8.5px;} .stamp .w{font-size:7.5px;}
+  }
+
+  .cloud-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    margin:18px auto 0; padding:6px 16px;
+    background:rgba(243,231,196,0.06); border:1px solid rgba(201,190,166,0.35);
+    border-radius:20px; color:var(--sky-text); font-size:12.5px;
+    font-family:"Iansui","Noto Serif TC",cursive; letter-spacing:0.03em;
+    cursor:pointer; transition:background .15s, color .15s, border-color .15s;
+  }
+  .cloud-btn svg{ width:15px; height:15px; flex-shrink:0; }
+  .cloud-btn:hover{ background:rgba(243,231,196,0.12); }
+  .cloud-btn.connected{ color:#B9E3C6; border-color:rgba(185,227,198,0.45); }
+  .cloud-btn.busy{ opacity:0.6; cursor:wait; }
+
+  .drive-settings-modal{
+    background:#4A4750; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:26px 24px 22px;
+    max-width:400px; width:100%;
+    box-shadow:0 20px 46px -10px rgba(0,0,0,0.6);
+  }
+  .drive-settings-modal h3{
+    font-family:"Iansui","Noto Serif TC",cursive; font-size:22px; margin:0 0 14px; color:#F3EFE6; font-weight:400;
+  }
+  .drive-settings-modal p{
+    font-size:13.5px; line-height:1.8; color:#C9BEA6; margin:0 0 16px;
+    font-family:"Iansui","Noto Serif TC",cursive; font-size:16px;
+  }
+  .drive-settings-modal a{ color:#8FB7E8; }
+  .drive-settings-modal label{
+    display:block; font-size:12.5px; color:#C9BEA6; margin-bottom:6px;
+    font-family:"Iansui","Noto Serif TC",cursive; letter-spacing:0.03em;
+  }
+  .drive-settings-modal input[type=text]{
+    width:100%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2);
+    border-radius:5px; padding:9px 11px; color:#F3EFE6; font-size:14px;
+    font-family:"Iansui","Noto Serif TC",cursive; outline:none; margin-bottom:16px;
+  }
+  .drive-settings-modal input[type=text]:focus{ border-color:#8FB7E8; }
+  .drive-status-row{
+    display:flex; align-items:center; gap:8px; margin-bottom:18px;
+    font-size:15px; color:#F3EFE6; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .drive-status-dot{ width:9px; height:9px; border-radius:50%; background:#8B3A2E; flex-shrink:0; }
+  .drive-status-dot.on{ background:#4FA96A; }
+  .drive-settings-actions{
+    display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .drive-settings-actions button{
+    background:none; border:none; cursor:pointer;
+    font-size:15px; color:#8FB7E8; font-family:"Iansui","Noto Serif TC",cursive; font-weight:600;
+    padding:4px 2px;
+  }
+  .drive-settings-actions button:hover{text-decoration:underline;}
+  .drive-settings-actions .drive-disconnect{ color:#D89999; }
+  .drive-import-row{ margin-top:18px; padding-top:16px; border-top:1px dashed rgba(255,255,255,0.15); }
+  .drive-import-row p{ font-size:13px; opacity:.85; line-height:1.6; margin-bottom:10px; }
+  .drive-import-row code{ background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:3px; }
+  .drive-import-row button{
+    padding:8px 16px; border-radius:2px; border:1px solid var(--parchment-edge);
+    background:transparent; color:inherit; cursor:pointer; font-family:inherit;
+    margin-right:8px; margin-bottom:6px;
+  }
+  .drive-import-row button:hover{ text-decoration:underline; }
+  .drive-import-row button:disabled{ opacity:.5; cursor:default; text-decoration:none; }
+  .drive-import-status{ margin-top:10px; font-size:12.5px; opacity:.85; min-height:1.4em; white-space:pre-line; }
+  .tweet-import-progress{
+    margin-top:8px; height:7px; border-radius:4px; overflow:hidden;
+    background:rgba(255,255,255,0.12); display:none;
+  }
+  .tweet-import-progress.show{ display:block; }
+  .tweet-import-progress .bar{
+    height:100%; width:0%; border-radius:4px;
+    background:linear-gradient(90deg, var(--gold), var(--sky-title));
+    transition:width .25s ease;
+  }
+
+  .video-dropzone{ margin-top:10px; }
+  .video-dropzone.disabled{ opacity:0.5; cursor:not-allowed; }
+  .video-hint{
+    font-size:12px; color:var(--ink-faint); margin-top:4px; text-align:center;
+    font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .video-preview-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  .video-thumb{
+    position:relative; width:120px; padding:8px; border-radius:4px;
+    background:rgba(58,42,22,0.06); border:1px solid var(--line-soft);
+    font-size:11.5px; color:var(--ink-soft); font-family:"Iansui","Noto Serif TC",cursive;
+    display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center;
+  }
+  .video-thumb video{ width:100%; height:64px; object-fit:cover; border-radius:3px; background:#000; }
+  .video-thumb .vt-name{ width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; }
+  .video-thumb .vt-status{ font-size:11px; color:var(--gold-dark); }
+  .video-thumb .vt-status.err{ color:var(--rust); }
+  .video-thumb button{
+    position:absolute; top:-6px; right:-6px; width:18px; height:18px;
+    border-radius:50%; border:none; background:var(--rust); color:#fff;
+    font-size:11px; line-height:1; cursor:pointer;
+  }
+  .entry-videos{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .entry-video-link{
+    display:flex; align-items:center; gap:8px;
+    padding:9px 12px; border-radius:4px; border:1px solid var(--line-soft);
+    background:rgba(58,42,22,0.05); color:var(--ink-soft); text-decoration:none;
+    font-size:14px; font-family:"Iansui","Noto Serif TC",cursive;
+  }
+  .entry-video-link:hover{ background:rgba(139,107,35,0.1); }
+  .drive-badge{
+    display:inline-flex; align-items:center; gap:3px; margin-left:6px;
+    font-size:10.5px; color:var(--ink-faint); font-family:"Iansui","Noto Serif TC",cursive;
+  }
+</style>
+</head>
+<body>
+<div class="snowfall" id="snowfall"></div>
+<div class="wrap">
+  <header>
+    <div class="floating-quill">
+      <svg viewBox="0 0 24 24"><path d="M20 4c-6 1-11 6-13 12l-2 4 4-2c6-2 11-7 12-13z"/><path d="M9 15l-4 4" stroke="#8B6B23" stroke-width="1" fill="none"/></svg>
+      <span class="spark s1"></span>
+      <span class="spark s2"></span>
+      <span class="spark s3"></span>
+    </div>
+    <div class="eyebrow">羊　皮　卷　軸</div>
+    <h1>為歡幾何</h1>
+    <p class="sub">浮生若夢，為歡幾何。</p>
+    <div class="quillrule">
+      <span class="line"></span>
+      <svg viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-6 1-11 6-13 12l-2 4 4-2c6-2 11-7 12-13z"/><path d="M9 15l-4 4"/></svg>
+      <span class="line"></span>
+    </div>
+    <button type="button" class="cloud-btn" id="cloudBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-8.98A5.5 5.5 0 0 1 17.4 8.02 4 4 0 0 1 17 16H7z"/></svg>
+      <span id="cloudBtnLabel">連接 Google 雲端</span>
+    </button>
+  </header>
+
+  <div class="composer-wrap">
+    <div class="composer">
+      <div class="composer-top">
+        <label class="date-field">
+          📅 <input type="date" id="dateInput">
+        </label>
+        <span class="count-tag" id="charCount">0 字</span>
+      </div>
+      <div class="quote-preview" id="quotePreview" style="display:none;"></div>
+      <textarea id="textInput" placeholder="今天發生了什麼呢……"></textarea>
+
+      <div class="quote-trigger-row">
+        <button class="quote-trigger" id="quoteTriggerBtn">↩ 引用一篇舊文章</button>
+      </div>
+
+      <div class="dropzone" id="dropzone">
+        點擊或拖曳圖片到這裡（最多 4 張）
+        <input type="file" id="fileInput" accept="image/*" multiple>
+      </div>
+      <div class="preview-row" id="previewRow"></div>
+
+      <div class="dropzone video-dropzone" id="videoDropzone">
+        🎬 點擊或拖曳影片到這裡（最多 2 支）
+        <input type="file" id="videoFileInput" accept="video/*" multiple>
+      </div>
+      <div class="video-hint" id="videoHint">影片會上傳到你的 Google 雲端硬碟，請先在上方連接帳號</div>
+      <div class="video-preview-row" id="videoPreviewRow"></div>
+      <input type="file" id="tweetImportInput" accept=".js,.json,.zip,application/json,text/javascript,application/zip,application/x-zip-compressed" style="display:none;">
+      <input type="file" id="tweetImportFolderInput" webkitdirectory directory multiple style="display:none;">
+    </div>
+
+    <div class="composer-bottom">
+      <div class="wax-picker">
+        <div class="wax-picker-row">
+          <button type="button" class="wax-trigger" id="waxTriggerBtn" title="選擇封蠟顏色" aria-label="選擇封蠟顏色"></button>
+          <button type="button" class="wax-dice" id="waxDiceBtn" title="✦ 抽籤漸層封蠟">✦</button>
+        </div>
+        <span class="wax-picker-label">這篇的封蠟顏色</span>
+      </div>
+      <label class="x-share-toggle" for="xShareToggle" title="存檔後分享到 X：有圖片且裝置支援時會開啟系統分享面板一併帶入圖片，否則開啟純文字發文視窗">
+        <input type="checkbox" id="xShareToggle">
+        <span>𝕏 同時分享</span>
+      </label>
+      <button class="seal-btn" id="saveBtn" aria-label="記下這一頁"></button>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input type="text" id="searchInput" placeholder="搜尋日期、文字或封蠟顏色（如：琥珀、漸層色）…">
+    <button class="search-clear" id="searchClear">✕</button>
+  </div>
+  <div class="search-result-count" id="searchResultCount" style="display:none;"></div>
+
+  <div class="entries-head">
+    <h2>老　舊　羊　皮　紙</h2>
+    <button class="clear-link" id="clearAllBtn">清空所有紀錄</button>
+  </div>
+
+  <div id="entriesContainer">
+    <div class="loading">展卷中…</div>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<div class="image-lightbox" id="imageLightbox">
+  <div class="lightbox-inner">
+    <img id="lightboxImg" alt="日記圖片">
+    <div class="lightbox-note" id="lightboxNote"></div>
+    <div class="lightbox-actions">
+      <button type="button" id="lightboxDownload">⬇ 下載原圖</button>
+      <button type="button" id="lightboxClose">✕ 關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- 儲存空間後備方案 ----
+// window.storage 是 Claude 網頁環境才會提供的即時儲存功能；
+// 這個檔案下載下來、獨立在瀏覽器打開（例如從「下載」資料夾點開）時，
+// window.storage 並不存在，所有存檔動作都會直接失敗。
+// 這裡用瀏覽器原生的 IndexedDB 補一個相同介面的後備方案，讓離線使用
+// 這個檔案時也能正常寫入、讀取資料，且沒有 Claude 那邊單一資料 5MB 的限制。
+//
+// 有些情況（例如透過 Android「下載」App 用 content:// 開啟這個檔案，
+// 而不是用真正的網址或 file:// 打開）連 IndexedDB 都無法建立 backing store，
+// 一開啟就會整組壞掉。這裡改成 IndexedDB → localStorage → 分頁記憶體
+// 三層備援，就算前面的方式都不能用，至少這次畫面還能繼續操作，
+// 不會卡在一個存檔失敗的錯誤視窗上出不去。
+if(!window.storage){
+  (function(){
+    const DB_NAME = 'wei-huan-ji-he-db';
+    const STORE_NAME = 'kv';
+    const LS_PREFIX = 'whjh-kv:';
+    const memoryStore = new Map();
+    let backendPromise = null;
+
+    function tryOpenIndexedDb(){
+      return new Promise((resolve, reject)=>{
+        if(!window.indexedDB){ reject(new Error('此瀏覽器沒有 indexedDB')); return; }
+        let req;
+        try{
+          req = indexedDB.open(DB_NAME, 1);
+        }catch(err){ reject(err); return; }
+        req.onupgradeneeded = ()=>{ req.result.createObjectStore(STORE_NAME); };
+        req.onsuccess = ()=> resolve(req.result);
+        req.onerror = ()=> reject(req.error || new Error('indexedDB.open 失敗'));
+        req.onblocked = ()=> reject(new Error('indexedDB.open 被卡住（blocked）'));
+      });
+    }
+
+    function localStorageWorks(){
+      try{
+        const testKey = '__whjh_test__';
+        localStorage.setItem(testKey, '1');
+        localStorage.removeItem(testKey);
+        return true;
+      }catch(err){ return false; }
+    }
+
+    async function chooseBackend(){
+      try{
+        const db = await tryOpenIndexedDb();
+        return { type:'idb', db };
+      }catch(err){
+        console.warn('IndexedDB 無法使用，改用瀏覽器 localStorage 備援', err);
+      }
+      if(localStorageWorks()){
+        return { type:'ls' };
+      }
+      console.warn('localStorage 也無法使用，改用僅存在本次畫面的暫存記憶體');
+      if(typeof showToast === 'function'){
+        showToast('這個瀏覽環境沒辦法把紀錄存到裝置裡（常見於直接從「下載」開啟這個檔案）。這次畫面仍可以繼續寫，但重新整理或關閉分頁後會消失——建議改用瀏覽器直接打開網址，或把檔案存進「檔案」App 後再用 Chrome 開啟。', 7000);
+      }
+      return { type:'mem' };
+    }
+
+    function getBackend(){
+      if(!backendPromise) backendPromise = chooseBackend();
+      return backendPromise;
+    }
+
+    function idbRequest(db, mode, run){
+      return new Promise((resolve, reject)=>{
+        const store = db.transaction(STORE_NAME, mode).objectStore(STORE_NAME);
+        run(store, resolve, reject);
+      });
+    }
+
+    window.storage = {
+      async get(key, shared){
+        const backend = await getBackend();
+        if(backend.type === 'idb'){
+          return idbRequest(backend.db, 'readonly', (store, resolve, reject)=>{
+            const req = store.get(key);
+            req.onsuccess = ()=>{
+              if(req.result === undefined){ reject(new Error('key not found: ' + key)); return; }
+              resolve({ key, value: req.result, shared: !!shared });
+            };
+            req.onerror = ()=> reject(req.error);
+          });
+        }
+        if(backend.type === 'ls'){
+          const raw = localStorage.getItem(LS_PREFIX + key);
+          if(raw === null) throw new Error('key not found: ' + key);
+          return { key, value: raw, shared: !!shared };
+        }
+        if(!memoryStore.has(key)) throw new Error('key not found: ' + key);
+        return { key, value: memoryStore.get(key), shared: !!shared };
+      },
+      async set(key, value, shared){
+        const backend = await getBackend();
+        if(backend.type === 'idb'){
+          return idbRequest(backend.db, 'readwrite', (store, resolve, reject)=>{
+            const req = store.put(value, key);
+            req.onsuccess = ()=> resolve({ key, value, shared: !!shared });
+            req.onerror = ()=> reject(req.error);
+          });
+        }
+        if(backend.type === 'ls'){
+          localStorage.setItem(LS_PREFIX + key, value);
+          return { key, value, shared: !!shared };
+        }
+        memoryStore.set(key, value);
+        return { key, value, shared: !!shared };
+      },
+      async delete(key, shared){
+        const backend = await getBackend();
+        if(backend.type === 'idb'){
+          return idbRequest(backend.db, 'readwrite', (store, resolve, reject)=>{
+            const req = store.delete(key);
+            req.onsuccess = ()=> resolve({ key, deleted: true, shared: !!shared });
+            req.onerror = ()=> reject(req.error);
+          });
+        }
+        if(backend.type === 'ls'){
+          localStorage.removeItem(LS_PREFIX + key);
+          return { key, deleted: true, shared: !!shared };
+        }
+        memoryStore.delete(key);
+        return { key, deleted: true, shared: !!shared };
+      },
+      async list(prefix, shared){
+        const backend = await getBackend();
+        if(backend.type === 'idb'){
+          return idbRequest(backend.db, 'readonly', (store, resolve, reject)=>{
+            const keys = [];
+            const req = store.openKeyCursor();
+            req.onsuccess = ()=>{
+              const cursor = req.result;
+              if(cursor){
+                if(!prefix || String(cursor.key).startsWith(prefix)) keys.push(cursor.key);
+                cursor.continue();
+              } else {
+                resolve({ keys, prefix, shared: !!shared });
+              }
+            };
+            req.onerror = ()=> reject(req.error);
+          });
+        }
+        if(backend.type === 'ls'){
+          const keys = [];
+          for(let i=0;i<localStorage.length;i++){
+            const k = localStorage.key(i);
+            if(k && k.startsWith(LS_PREFIX)){
+              const realKey = k.slice(LS_PREFIX.length);
+              if(!prefix || realKey.startsWith(prefix)) keys.push(realKey);
+            }
+          }
+          return { keys, prefix, shared: !!shared };
+        }
+        const keys = Array.from(memoryStore.keys()).filter(k=> !prefix || k.startsWith(prefix));
+        return { keys, prefix, shared: !!shared };
+      }
+    };
+  })();
+}
+
+const ENTRY_INDEX_KEY = 'diary:index';
+const ENTRY_KEY_PREFIX = 'diary:entry:';
+const LEGACY_STORAGE_KEY = 'diary:entries';
+const GDRIVE_CLIENT_ID_KEY = 'gdrive:clientId';
+const GDRIVE_FOLDER_ID_KEY = 'gdrive:folderId';
+const GDRIVE_WAS_CONNECTED_KEY = 'gdrive:wasConnected';
+let entries = [];
+let pendingImages = [];
+let pendingOriginals = [];
+let pendingImageJobs = [];
+let pendingVideos = [];
+const MAX_IMAGES = 4;
+const MAX_VIDEOS = 2;
+
+const dateInput = document.getElementById('dateInput');
+const textInput = document.getElementById('textInput');
+const charCount = document.getElementById('charCount');
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const tweetImportInput = document.getElementById('tweetImportInput');
+const tweetImportFolderInput = document.getElementById('tweetImportFolderInput');
+const previewRow = document.getElementById('previewRow');
+const videoDropzone = document.getElementById('videoDropzone');
+const videoFileInput = document.getElementById('videoFileInput');
+const videoPreviewRow = document.getElementById('videoPreviewRow');
+const videoHint = document.getElementById('videoHint');
+const cloudBtn = document.getElementById('cloudBtn');
+const cloudBtnLabel = document.getElementById('cloudBtnLabel');
+const saveBtn = document.getElementById('saveBtn');
+const xShareToggle = document.getElementById('xShareToggle');
+const entriesContainer = document.getElementById('entriesContainer');
+const clearAllBtn = document.getElementById('clearAllBtn');
+const modalRoot = document.getElementById('modalRoot');
+const toastRoot = document.getElementById('toastRoot');
+
+function showToast(message, duration=3200){
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = message;
+  toastRoot.appendChild(el);
+  requestAnimationFrame(()=> el.classList.add('show'));
+  setTimeout(()=>{
+    el.classList.remove('show');
+    setTimeout(()=> el.remove(), 300);
+  }, duration);
+}
+const imageLightbox = document.getElementById('imageLightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxNote = document.getElementById('lightboxNote');
+const lightboxDownloadBtn = document.getElementById('lightboxDownload');
+const lightboxCloseBtn = document.getElementById('lightboxClose');
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+const searchResultCount = document.getElementById('searchResultCount');
+const waxTriggerBtn = document.getElementById('waxTriggerBtn');
+const waxDiceBtn = document.getElementById('waxDiceBtn');
+let searchQuery = '';
+let selectedQuote = null;
+
+const PRESET_COLORS = [
+  { name:'靛藍', color:'#33578F' },
+  { name:'琥珀', color:'#D89B3E' },
+  { name:'酒紅', color:'#8B2E2E' },
+  { name:'蒼綠', color:'#2E7D4F' },
+  { name:'紫棠', color:'#6B2F8C' },
+  { name:'墨灰', color:'#7C7C7C' }
+];
+let currentWax = { a: PRESET_COLORS[0].color, b: PRESET_COLORS[0].color };
+
+function randInt(min, max, rng){ return Math.floor((rng?rng():Math.random())*(max-min+1))+min; }
+function randFloat(min, max, rng){ return (rng?rng():Math.random())*(max-min)+min; }
+
+function hashStringToSeed(str){
+  let h = 0;
+  for(let i=0; i<str.length; i++){ h = (Math.imul(31, h) + str.charCodeAt(i)) | 0; }
+  return h >>> 0;
+}
+function mulberry32(seed){
+  return function(){
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// 產生類似複雜幾何蔓藤花紋（星形連線＋同心圓）的封蠟圖案。
+// 傳入 rng 可讓同一篇日記每次重新渲染時都拿到同樣的圖案（用 entry.id 當種子）；
+// 不傳則每次都是全新隨機（存檔按鈕用這種）。
+function generateSealPattern(rng, extraClass){
+  const cx = 12, cy = 12, r = 10.8;
+  const n = randInt(6, 10, rng);
+  const points = [];
+  for(let i=0; i<n; i++){
+    const angle = (Math.PI*2*i/n) - Math.PI/2;
+    points.push([cx + r*Math.cos(angle), cy + r*Math.sin(angle)]);
+  }
+  const maxSkip = Math.floor(n/2);
+  const skipPool = [];
+  for(let s=2; s<=maxSkip; s++) skipPool.push(s);
+  for(let i=skipPool.length-1; i>0; i--){
+    const j = randInt(0, i, rng);
+    [skipPool[i], skipPool[j]] = [skipPool[j], skipPool[i]];
+  }
+  const skipCount = Math.max(1, Math.min(skipPool.length, randInt(2, 3, rng)));
+  const chosenSkips = skipPool.length ? skipPool.slice(0, skipCount) : [1];
+
+  let shapes = '';
+  chosenSkips.forEach(skip=>{
+    for(let i=0; i<n; i++){
+      const a = points[i];
+      const b = points[(i+skip)%n];
+      shapes += `<line x1="${a[0].toFixed(2)}" y1="${a[1].toFixed(2)}" x2="${b[0].toFixed(2)}" y2="${b[1].toFixed(2)}"/>`;
+    }
+  });
+  const circleCount = randInt(1, 2, rng);
+  for(let c=0; c<circleCount; c++){
+    const cr = (r * randFloat(0.16, 0.34, rng)).toFixed(2);
+    shapes += `<circle cx="${cx}" cy="${cy}" r="${cr}"/>`;
+  }
+  const cls = extraClass ? ` class="${extraClass}"` : '';
+  return `<svg viewBox="0 0 24 24"${cls}>${shapes}</svg>`;
+}
+
+function renderSealPattern(){
+  saveBtn.innerHTML = generateSealPattern();
+}
+
+function seededSealPatternFor(entry){
+  return generateSealPattern(mulberry32(hashStringToSeed(entry.id)), 'stamp-pattern');
+}
+
+function waxCategoryName(entry){
+  const wax = entry.wax || {};
+  const a = (wax.a || PRESET_COLORS[0].color).toLowerCase();
+  const b = (wax.b || a).toLowerCase();
+  if(a !== b) return '漸層色';
+  const preset = PRESET_COLORS.find(p => p.color.toLowerCase() === a);
+  return preset ? preset.name : '漸層色';
+}
+
+// 有些文章（例如匯入的舊推文）本文留空、內容其實放在引用區塊裡；
+// 搜尋、摘要顯示、「引用這篇」時都要把這種情況一併考慮進去，
+// 不然會搜不到內容、或是引用出一段空白。
+function entryBodyText(entry){
+  if(entry.text) return entry.text;
+  if(entry.quote && entry.quote.text) return entry.quote.text;
+  return '';
+}
+
+// ==================== Google Drive 雲端儲存 ====================
+const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
+let gDriveClientId = '';
+let gDriveFolderId = '';
+let gDriveAccessToken = '';
+let gDriveTokenExpiresAt = 0;
+let gDriveRefreshTimer = null;
+let driveAutoSyncTimer = null;
+let gDriveTokenClient = null;
+let gDriveConnecting = false;
+
+function updateCloudBtn(){
+  cloudBtn.classList.remove('connected','busy');
+  if(gDriveConnecting){
+    cloudBtn.classList.add('busy');
+    cloudBtnLabel.textContent = '連接中…';
+  } else if(gDriveAccessToken){
+    cloudBtn.classList.add('connected');
+    cloudBtnLabel.textContent = '已連接 Google 雲端';
+  } else if(gDriveClientId){
+    cloudBtnLabel.textContent = '點此連接 Google 雲端';
+  } else {
+    cloudBtnLabel.textContent = '設定 Google 雲端';
+  }
+  const canUseVideo = !!gDriveAccessToken;
+  videoDropzone.classList.toggle('disabled', !canUseVideo);
+  videoHint.textContent = canUseVideo
+    ? '影片將上傳到你的 Google 雲端硬碟'
+    : '影片會上傳到你的 Google 雲端硬碟，請先在上方連接帳號';
+}
+
+async function loadDriveSettings(){
+  try{
+    const idRes = await window.storage.get(GDRIVE_CLIENT_ID_KEY, false);
+    gDriveClientId = (idRes && idRes.value) || '';
+  }catch(err){ gDriveClientId = ''; }
+  try{
+    const folderRes = await window.storage.get(GDRIVE_FOLDER_ID_KEY, false);
+    gDriveFolderId = (folderRes && folderRes.value) || '';
+  }catch(err){ gDriveFolderId = ''; }
+  updateCloudBtn();
+}
+
+function ensureTokenClient(){
+  if(!window.google || !google.accounts || !google.accounts.oauth2){
+    showModal('Google 登入元件尚未載入，請確認網路連線後再試一次。', async ()=>{});
+    return null;
+  }
+  if(!gDriveTokenClient || gDriveTokenClient.__clientId !== gDriveClientId){
+    gDriveTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: gDriveClientId,
+      scope: DRIVE_SCOPE,
+      callback: ()=>{}
+    });
+    gDriveTokenClient.__clientId = gDriveClientId;
+  }
+  return gDriveTokenClient;
+}
+
+function requestDriveToken(interactive){
+  return new Promise((resolve, reject)=>{
+    const client = ensureTokenClient();
+    if(!client){ reject(new Error('no-client')); return; }
+    client.callback = (resp)=>{
+      if(resp && resp.access_token){
+        gDriveAccessToken = resp.access_token;
+        // GIS 核發的 access token 大約一小時後過期，這裡記下確切到期時間，
+        // 讓 scheduleTokenRefresh() 能在真的過期前就安靜地換好下一個，
+        // 盡量維持「一直連著」的體感，不用使用者自己發現斷線再手動重新連接。
+        gDriveTokenExpiresAt = Date.now() + (Number(resp.expires_in || 3599) * 1000);
+        updateCloudBtn();
+        scheduleTokenRefresh();
+        startDriveAutoSync();
+        resolve(resp.access_token);
+      } else {
+        reject(new Error('no-token'));
+      }
+    };
+    client.error_callback = (err)=> reject(err);
+    client.requestAccessToken({ prompt: interactive ? 'consent' : '' });
+  });
+}
+
+// 在 access token 到期前 5 分鐘，安靜地（不彈同意畫面）換一個新的，
+// 換到後會在 requestDriveToken 裡再呼叫一次 scheduleTokenRefresh()，
+// 這樣就會一直接力下去，只要分頁沒關、Google 那邊的登入狀態還在，
+// 理論上就不會因為 token 過期而斷線。換不到的話 5 分鐘後再試一次
+// （可能只是暫時網路問題），不會就此放棄。
+function scheduleTokenRefresh(){
+  if(gDriveRefreshTimer){ clearTimeout(gDriveRefreshTimer); gDriveRefreshTimer = null; }
+  if(!gDriveAccessToken || !gDriveTokenExpiresAt) return;
+  const lead = 5 * 60 * 1000;
+  let delay = gDriveTokenExpiresAt - Date.now() - lead;
+  if(delay < 10000) delay = 10000;
+  gDriveRefreshTimer = setTimeout(async ()=>{
+    try{
+      await requestDriveToken(false);
+    }catch(err){
+      gDriveRefreshTimer = setTimeout(()=> scheduleTokenRefresh(), 5 * 60 * 1000);
+    }
+  }, delay);
+}
+
+// 除了「打開頁面時同步一次」，連接期間也每隔幾分鐘自動同步一次，
+// 這樣如果你在別的裝置上新增了文章，這邊不用手動按「立即同步」也會慢慢抓回來。
+function startDriveAutoSync(){
+  if(driveAutoSyncTimer) return;
+  driveAutoSyncTimer = setInterval(()=>{
+    if(gDriveAccessToken) syncFromDrive(true);
+  }, 6 * 60 * 1000);
+}
+function stopDriveAutoSync(){
+  if(driveAutoSyncTimer){ clearInterval(driveAutoSyncTimer); driveAutoSyncTimer = null; }
+}
+
+async function connectDrive(){
+  if(!gDriveClientId){
+    showModal('請先貼上 Google OAuth 用戶端 ID，才能連接雲端硬碟。', async ()=>{});
+    return;
+  }
+  gDriveConnecting = true;
+  updateCloudBtn();
+  try{
+    await requestDriveToken(true);
+    await ensureDriveFolder();
+    showToast('已成功連接 Google 雲端硬碟，正在同步之前的備份…');
+    await syncFromDrive(false);
+  }catch(err){
+    showModal('連接 Google 雲端硬碟失敗，請確認用戶端 ID 是否正確，以及此網址是否已加入 Google Cloud Console 的授權來源。', async ()=>{});
+  }
+  gDriveConnecting = false;
+  updateCloudBtn();
+}
+
+function disconnectDrive(){
+  if(gDriveAccessToken && window.google && google.accounts && google.accounts.oauth2){
+    try{ google.accounts.oauth2.revoke(gDriveAccessToken, ()=>{}); }catch(err){}
+  }
+  gDriveAccessToken = '';
+  gDriveTokenExpiresAt = 0;
+  if(gDriveRefreshTimer){ clearTimeout(gDriveRefreshTimer); gDriveRefreshTimer = null; }
+  stopDriveAutoSync();
+  window.storage.delete(GDRIVE_WAS_CONNECTED_KEY, false).catch(()=>{});
+  updateCloudBtn();
+}
+
+// 同一時間可能有好幾個地方呼叫 ensureDriveFolder()（例如剛連接時的自動同步、
+// 使用者手動按「立即同步」），如果各自獨立去查「有沒有這個資料夾」，
+// 查詢的當下都還沒有，就會各自建立一個，導致雲端硬碟裡出現兩個同名資料夾——
+// 舊文章備份留在其中一個，另一個是空的，之後同步查到空的那個就會覺得「怎麼都抓不到舊文」。
+// 用同一個 in-flight promise 讓所有呼叫排隊等同一次查詢/建立的結果，就不會重複建立。
+let driveFolderEnsurePromise = null;
+
+async function ensureDriveFolder(){
+  if(driveFolderEnsurePromise) return driveFolderEnsurePromise;
+  driveFolderEnsurePromise = (async ()=>{
+    // 就算本機已經快取過資料夾 id，也先確認那個資料夾還存在、沒被刪除或搬到垃圾桶，
+    // 不然拿一個已經失效的 id 去查裡面的檔案，Drive API 只會安靜地回傳「沒有檔案」，
+    // 使用者會看起來像是「同步了但沒有把舊文抓下來」，其實是快取的資料夾 id 過期了。
+    if(gDriveFolderId){
+      try{
+        const checkRes = await fetch(`https://www.googleapis.com/drive/v3/files/${gDriveFolderId}?fields=id,trashed`, {
+          headers: { 'Authorization': 'Bearer ' + gDriveAccessToken }
+        });
+        if(checkRes.ok){
+          const info = await checkRes.json();
+          if(!info.trashed) return gDriveFolderId;
+        }
+      }catch(err){}
+      gDriveFolderId = '';
+    }
+    const q = encodeURIComponent("name='為歡幾何 手記' and mimeType='application/vnd.google-apps.folder' and trashed=false");
+    const listRes = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,createdTime)&orderBy=createdTime&pageSize=50`, {
+      headers: { 'Authorization': 'Bearer ' + gDriveAccessToken }
+    });
+    const listData = await listRes.json();
+    if(listData.files && listData.files.length > 0){
+      // 萬一過去真的不小心建立過重複的同名資料夾，一律挑「最早建立」的那個當正式資料夾，
+      // 因為原本存舊文備份的資料夾一定比後來誤建的重複資料夾更早出現。
+      gDriveFolderId = listData.files[0].id;
+    } else {
+      const createRes = await fetch('https://www.googleapis.com/drive/v3/files', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + gDriveAccessToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: '為歡幾何 手記', mimeType: 'application/vnd.google-apps.folder' })
+      });
+      const createData = await createRes.json();
+      gDriveFolderId = createData.id;
+    }
+    try{
+      await window.storage.set(GDRIVE_FOLDER_ID_KEY, gDriveFolderId, false);
+    }catch(err){}
+    return gDriveFolderId;
+  })();
+  try{
+    return await driveFolderEnsurePromise;
+  } finally {
+    driveFolderEnsurePromise = null;
+  }
+}
+
+// Resumable upload — suitable for both photos and larger video files.
+async function uploadFileToDrive(file, name, mimeType, onProgress){
+  const folderId = await ensureDriveFolder();
+  const startRes = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + gDriveAccessToken,
+      'Content-Type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify({ name, parents: [folderId] })
+  });
+  if(!startRes.ok) throw new Error('drive-session-failed');
+  const uploadUrl = startRes.headers.get('Location');
+  if(!uploadUrl) throw new Error('drive-no-upload-url');
+  const putRes = await fetch(uploadUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': mimeType || file.type || 'application/octet-stream' },
+    body: file
+  });
+  if(!putRes.ok) throw new Error('drive-upload-failed');
+  const fileData = await putRes.json();
+  const metaRes = await fetch(`https://www.googleapis.com/drive/v3/files/${fileData.id}?fields=id,name,mimeType,webViewLink`, {
+    headers: { 'Authorization': 'Bearer ' + gDriveAccessToken }
+  });
+  const meta = await metaRes.json();
+  return { id: meta.id, name: meta.name, mimeType: meta.mimeType, webViewLink: meta.webViewLink };
+}
+
+async function uploadTextToDrive(name, text){
+  const folderId = await ensureDriveFolder();
+  const boundary = 'diaryBoundary' + Date.now();
+  const metadata = { name, parents: [folderId], mimeType: 'text/plain' };
+  const body =
+    `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n` +
+    `--${boundary}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n${text}\r\n` +
+    `--${boundary}--`;
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + gDriveAccessToken,
+      'Content-Type': `multipart/related; boundary=${boundary}`
+    },
+    body
+  });
+  if(!res.ok) throw new Error('drive-text-upload-failed');
+  return res.json();
+}
+
+// ---- 完整文章備份（文字＋縮圖），用於雲端硬碟還原 ----
+// 每篇文章存成一個 entry-<id>.json，內容跟本機儲存的資料結構一致，
+// 這樣換裝置或重新安裝後，連上同一個 Google 帳號就能把文章＋圖片抓回來。
+function driveEntryBackupName(id){ return `entry-${id}.json`; }
+
+async function uploadEntryBackup(entry){
+  if(!gDriveAccessToken) return null;
+  const folderId = await ensureDriveFolder();
+  const name = driveEntryBackupName(entry.id);
+  const payload = JSON.stringify({
+    id: entry.id,
+    date: entry.date,
+    text: entry.text || '',
+    images: entry.images || [],
+    videos: entry.videos || [],
+    quote: entry.quote || null,
+    wax: entry.wax || null,
+    createdAt: entry.createdAt
+  });
+  const boundary = 'diaryEntryBoundary' + Date.now();
+  const metadata = {
+    name, parents: [folderId], mimeType: 'application/json',
+    appProperties: { whjhEntry: 'true', entryId: entry.id }
+  };
+  const body =
+    `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n` +
+    `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${payload}\r\n` +
+    `--${boundary}--`;
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + gDriveAccessToken,
+      'Content-Type': `multipart/related; boundary=${boundary}`
+    },
+    body
+  });
+  if(!res.ok){
+    const e = new Error('drive-entry-backup-failed');
+    e.status = res.status;
+    throw e;
+  }
+  return res.json();
+}
+
+// 覆蓋更新雲端硬碟上「已經存在」的那份備份內容（例如換了封蠟顏色、改了文字之後），
+// 用 PATCH + uploadType=media 直接換掉檔案內容，不會另外多產生一個新檔案，
+// 也不影響原本的檔名／appProperties。找不到這個檔案（例如被使用者手動刪掉）時，
+// 會回傳 null，讓呼叫端自己決定要不要改成整篇重新上傳一次。
+async function updateEntryBackup(entry){
+  if(!gDriveAccessToken || !entry.driveBackupId) return null;
+  const payload = JSON.stringify({
+    id: entry.id,
+    date: entry.date,
+    text: entry.text || '',
+    images: entry.images || [],
+    videos: entry.videos || [],
+    quote: entry.quote || null,
+    wax: entry.wax || null,
+    createdAt: entry.createdAt
+  });
+  const res = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${entry.driveBackupId}?uploadType=media&fields=id,name`, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': 'Bearer ' + gDriveAccessToken,
+      'Content-Type': 'application/json; charset=UTF-8'
+    },
+    body: payload
+  });
+  if(res.status === 404) return null;
+  if(!res.ok){
+    const e = new Error('drive-entry-backup-update-failed');
+    e.status = res.status;
+    throw e;
+  }
+  return res.json();
+}
+
+// 把一篇文章的目前狀態（含封蠟顏色）同步到雲端硬碟：如果已經有備份就直接覆蓋更新內容，
+// 沒有備份、或雲端那份已經被刪掉了，就整篇重新上傳一次並記下新的 driveBackupId。
+// 成功後會把 driveDirty 清掉，這樣「補傳未同步文章」下次才不會把這篇又當成需要處理的。
+async function backupOneEntry(entry){
+  if(entry.driveBackupId){
+    const updated = await updateEntryBackup(entry);
+    if(updated){
+      if(entry.driveDirty){
+        entry.driveDirty = false;
+        await persistEntry(entry);
+      }
+      return;
+    }
+    // 走到這裡代表雲端那份備份已經不存在了（可能被手動刪除），改成整篇重新上傳。
+  }
+  const f = await uploadEntryBackup(entry);
+  if(!f || !f.id) throw new Error('upload-failed');
+  entry.driveBackupId = f.id;
+  entry.driveDirty = false;
+  await persistEntry(entry);
+}
+
+
+// 補齊雲端備份。只處理真的需要處理的兩種文章：
+// 1. 本機完全還沒有雲端備份的文章（driveBackupId 是空的）→ 整篇上傳一次。
+// 2. 本機內容改過、但還沒成功同步回雲端的文章（entry.driveDirty 是 true，
+//    例如換封蠟顏色時剛好網路不穩，背景自動同步失敗了）→ 覆蓋更新雲端那份備份。
+// 「本機已經同步過、單純沒被改動」的文章不會被重新處理，
+// 不然本機文章一多，每次按都要把全部文章重傳一次，既浪費時間也容易被 Google 限流。
+// 一次同時處理 4 篇（Promise.all），這批做完才做下一批；如果失敗是因為連線過期（401），
+// 會先安靜地換一次新的 access token 再重試一次，而不是整批直接判定失敗。
+let driveBackfilling = false;
+async function backfillMissingDriveBackups(statusEl, progressBar){
+  if(!gDriveAccessToken){
+    showToast('請先連接 Google 雲端硬碟，才能補傳備份。');
+    return;
+  }
+  if(driveBackfilling) return;
+  const targets = entries.filter(e => !e.driveBackupId || e.driveDirty);
+  if(targets.length === 0){
+    const msg = entries.length === 0 ? '目前沒有文章可以補傳。' : '目前本機文章的雲端備份都已經是最新的了。';
+    if(statusEl) statusEl.textContent = msg;
+    showToast(msg);
+    return;
+  }
+  driveBackfilling = true;
+  const total = targets.length;
+  let done = 0, failed = 0, reauthTried = false;
+  const updateProgress = ()=>{
+    const processed = done + failed;
+    if(statusEl) statusEl.textContent = `補傳雲端備份中… ${processed} / ${total} 篇`;
+    if(progressBar) progressBar.style.width = Math.round((processed / total) * 100) + '%';
+  };
+  updateProgress();
+  const BATCH_SIZE = 4;
+  for(let i = 0; i < targets.length; i += BATCH_SIZE){
+    const batch = targets.slice(i, i + BATCH_SIZE);
+    await Promise.all(batch.map(async (entry)=>{
+      try{
+        await backupOneEntry(entry);
+        done++;
+      }catch(err){
+        if(err && err.status === 401 && !reauthTried){
+          reauthTried = true;
+          try{ await requestDriveToken(false); }catch(reauthErr){}
+        }
+        try{
+          await backupOneEntry(entry);
+          done++;
+        }catch(err2){
+          console.warn('補傳雲端備份失敗：', entry.id, err2);
+          failed++;
+        }
+      }
+      updateProgress();
+    }));
+  }
+  driveBackfilling = false;
+  const msg = failed
+    ? `補傳完成：成功 ${done} 篇，失敗 ${failed} 篇（可能是網路不穩或連線過期，稍後可以再按一次）。`
+    : `補傳完成：${done} 篇文章的雲端備份都已經更新好了（含封蠟顏色）。`;
+  if(statusEl) statusEl.textContent = msg;
+  if(progressBar) progressBar.style.width = '100%';
+  showToast(msg);
+}
+
+// ---------- Twitter / X 封存匯入 ----------
+// 讀進的是官方封存資料夾裡的 data/tweets.js（新版）或 data/tweet.js（舊版），
+// 檔案開頭會有一段 `window.YTD.tweets.part0 = ` 這類的變數指定，後面才接一個 JSON 陣列。
+// 這裡把那段前綴拿掉，剩下的部分才是真正能 JSON.parse 的內容。
+function stripYtdPrefix(raw){
+  const text = raw.trim();
+  const eqIdx = text.indexOf('=');
+  const bracketIdx = text.indexOf('[');
+  if(text.startsWith('window.YTD') && eqIdx !== -1 && (bracketIdx === -1 || eqIdx < bracketIdx)){
+    return text.slice(eqIdx + 1).trim();
+  }
+  return text;
+}
+
+function parseTwitterDate(createdAt){
+  // 封存裡的日期格式類似 "Wed Oct 10 20:19:24 +0000 2018"，
+  // 這個格式剛好是 Date 建構子看得懂的格式，直接餵進去即可。
+  const d = new Date(createdAt);
+  if(isNaN(d.getTime())) return null;
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function parseTweetArchiveText(raw){
+  let json;
+  try{
+    json = JSON.parse(stripYtdPrefix(raw));
+  }catch(err){
+    throw new Error('無法解析這份檔案，請確認上傳的是封存資料夾裡的 data/tweets.js，或是完整的封存 zip。');
+  }
+  if(!Array.isArray(json)) throw new Error('這份檔案裡沒有找到推文陣列。');
+  const out = [];
+  for(const item of json){
+    const t = item && item.tweet ? item.tweet : item;
+    if(!t) continue;
+    const idStr = t.id_str || t.id || '';
+    const fullText = (t.full_text || t.text || '').trim();
+    const dateStr = parseTwitterDate(t.created_at);
+    if(!idStr || !fullText || !dateStr) continue;
+    out.push({
+      id: String(idStr),
+      date: dateStr,
+      text: fullText,
+      replyToId: t.in_reply_to_status_id_str ? String(t.in_reply_to_status_id_str) : null
+    });
+  }
+  return out;
+}
+
+// 把一批推文轉成日記文章。
+// - 如果這則推文是「回覆自己另一則也一起被匯入的舊推文」，就把被回覆的那篇當作
+//   引用區塊呈現（可點擊跳過去，跟站內互相引用一樣），本文則放這則推文自己的內容；
+// - 其他情況維持原本設計：本文留白，只用引用區塊呈現推文原文本身。
+// media 參數（可省略）：{ zip: JSZip 實例, mediaByTweetId: Map(推文id -> zip 內照片路徑陣列), videoCount }
+async function importTweetArchive(tweetList, statusEl, media, startFraction){
+  const getBlob = media && media.getBlob;
+  const mediaByTweetId = media && media.mediaByTweetId;
+  const videoCount = (media && media.videoCount) || 0;
+  const startFrac = typeof startFraction === 'number' ? startFraction : 0;
+  const tweetMap = new Map(tweetList.map(t=>[t.id, t]));
+
+  const existingIds = new Set(entries.map(e=>e.id));
+  const toImport = tweetList
+    .map(t=>({ ...t, entryId: 'tw-' + t.id }))
+    .filter(t=> !existingIds.has(t.entryId))
+    .sort((a,b)=> a.date < b.date ? 1 : (a.date > b.date ? -1 : 0)); // 新到舊
+
+  if(toImport.length === 0){
+    setImportProgress(null);
+    if(statusEl) statusEl.textContent = tweetList.length
+      ? `這份封存裡的 ${tweetList.length} 篇推文都已經匯入過了。`
+      : '沒有在這份檔案裡找到可匯入的推文。';
+    return;
+  }
+
+  let done = 0, backedUp = 0, failed = 0, withImages = 0;
+  for(const t of toImport){
+    const parent = t.replyToId ? tweetMap.get(t.replyToId) : null;
+
+    let images = [];
+    if(mediaByTweetId && mediaByTweetId.has(t.id) && getBlob){
+      for(const path of mediaByTweetId.get(t.id)){
+        try{
+          const blob = await getBlob(path);
+          const typedBlob = blob.type && blob.type.startsWith('image/') ? blob : new Blob([blob], { type: guessImageMime(path) });
+          const { thumb } = await processImage(typedBlob);
+          if(thumb) images.push(thumb);
+        }catch(err){ /* 單張照片轉檔失敗不影響整篇文章 */ }
+      }
+      if(images.length) withImages++;
+    }
+
+    const entry = {
+      id: t.entryId,
+      date: t.date,
+      text: parent ? t.text : '',
+      images,
+      videos: [],
+      quote: parent
+        ? { id: 'tw-' + parent.id, date: parent.date + '（X 舊文）', text: parent.text }
+        : { id: null, date: t.date + '（X 舊文）', text: t.text },
+      wax: { a: PRESET_COLORS[0].color, b: PRESET_COLORS[0].color },
+      createdAt: Date.now()
+    };
+    entries.push(entry); // 附加在陣列尾端，視為比目前紀錄都更早的舊文
+    try{
+      await persistEntry(entry);
+      done++;
+    }catch(err){
+      failed++;
+      continue;
+    }
+    if(gDriveAccessToken){
+      try{
+        const f = await uploadEntryBackup(entry);
+        if(f && f.id){
+          entry.driveBackupId = f.id;
+          await persistEntry(entry);
+        }
+        backedUp++;
+      }catch(err){ console.warn('匯入舊文時雲端備份失敗：', entry.id, err); }
+    }
+    const progressed = (done + failed) / toImport.length;
+    setImportProgress(startFrac + progressed * (1 - startFrac));
+    if(statusEl){
+      statusEl.textContent = `匯入中… ${done + failed} / ${toImport.length}`;
+    }
+  }
+  await persistIndex();
+  renderEntries();
+  setImportProgress(null);
+  const skipped = tweetList.length - toImport.length;
+  let msg = `已匯入 ${done} 篇舊推文`;
+  if(withImages) msg += `（其中 ${withImages} 篇附有照片）`;
+  if(gDriveAccessToken) msg += `，${backedUp} 篇已同步到雲端硬碟`;
+  if(skipped > 0) msg += `；另有 ${skipped} 篇先前已匯入過，已略過`;
+  if(failed > 0) msg += `；${failed} 篇儲存失敗`;
+  if(videoCount > 0) msg += `。（另偵測到 ${videoCount} 支影片，目前匯入功能還不支援影片）`;
+  if(statusEl) statusEl.textContent = msg;
+  showToast(msg);
+}
+
+// 惰性載入 JSZip：只有使用者真的選了 zip 檔要匯入時才會去載，平常開啟頁面不受影響。
+let jszipLoadPromise = null;
+function loadJSZip(){
+  if(window.JSZip) return Promise.resolve(window.JSZip);
+  if(jszipLoadPromise) return jszipLoadPromise;
+  jszipLoadPromise = new Promise((resolve, reject)=>{
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload = ()=> resolve(window.JSZip);
+    s.onerror = ()=> reject(new Error('無法載入解壓縮套件，請確認網路連線後再試一次。'));
+    document.head.appendChild(s);
+  });
+  return jszipLoadPromise;
+}
+
+const IMAGE_EXT_RE = /\.(jpg|jpeg|png|gif|webp)$/i;
+function guessImageMime(path){
+  const ext = (path.split('.').pop() || '').toLowerCase();
+  if(ext === 'jpg' || ext === 'jpeg') return 'image/jpeg';
+  if(ext === 'png') return 'image/png';
+  if(ext === 'gif') return 'image/gif';
+  if(ext === 'webp') return 'image/webp';
+  return 'image/jpeg';
+}
+
+// 控制匯入進度條顯示：fraction 為 0~1 之間的數字，傳 null 則隱藏進度條。
+function setImportProgress(fraction){
+  const wrap = document.getElementById('tweetImportProgress');
+  const bar = document.getElementById('tweetImportProgressBar');
+  if(!wrap || !bar) return;
+  if(fraction == null){
+    wrap.classList.remove('show');
+    bar.style.width = '0%';
+    return;
+  }
+  wrap.classList.add('show');
+  bar.style.width = (Math.max(0, Math.min(1, fraction)) * 100) + '%';
+}
+
+// 用 FileReader 讀檔，能拿到讀取進度（file.arrayBuffer()/file.text() 拿不到進度事件）。
+function readFileWithProgress(file, onProgress, asText){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onprogress = (e)=>{
+      if(onProgress && e.lengthComputable) onProgress(e.loaded / e.total);
+    };
+    reader.onload = ()=> resolve(reader.result);
+    reader.onerror = ()=> reject(reader.error || new Error('讀取檔案失敗。'));
+    if(asText) reader.readAsText(file);
+    else reader.readAsArrayBuffer(file);
+  });
+}
+
+// 從封存 zip 裡找出 data/tweets.js，以及 data/tweets_media/ 底下依推文 id 分組的照片路徑。
+// 官方封存裡的媒體檔名固定是「{推文id}-{原始檔名}」，直接照這個規則配對，不依賴 media id。
+async function extractFromArchiveZip(file, statusEl){
+  const JSZip = await loadJSZip();
+  let zip;
+  try{
+    // 大型封存檔（幾百 MB～數 GB）在部分瀏覽器直接丟 File 物件給 JSZip 偶爾會誤判壓縮檔
+    // 結構，改成先讀成 ArrayBuffer 再交給 JSZip 解析，穩定度比較好；順便可以回報讀取進度。
+    setImportProgress(0);
+    const buf = await readFileWithProgress(file, (p)=>{
+      setImportProgress(p * 0.15); // 讀檔算整體進度的前 15%
+      if(statusEl) statusEl.textContent = `讀取壓縮檔中… ${(p*100).toFixed(0)}%`;
+    }, false);
+    if(statusEl) statusEl.textContent = '解析壓縮檔結構中…';
+    zip = await JSZip.loadAsync(buf);
+  }catch(err){
+    console.error('zip 讀取失敗：', err);
+    const raw = err && err.message ? err.message : '';
+    const sizeMB = (file.size / (1024*1024)).toFixed(1);
+    if(/corrupted zip/i.test(raw)){
+      throw new Error(`這個 zip 檔案（約 ${sizeMB} MB）的內容目錄讀不出來，最常見的原因是下載時被中斷、檔案不完整，或瀏覽器/雲端硬碟在下載途中把檔案動過。建議：①對照一下 X 網站上顯示的封存檔案大小，跟你電腦上這個檔案是否一致，不一致就代表下載沒完整，重新下載一次；②若檔案很大（有很多照片/影片）重複失敗，可以改用下方「上傳解壓縮後的資料夾」功能，不需要整個 zip 也能匯入照片；③或是先只上傳封存資料夾裡的 data/tweets.js（純文字，不含照片）。`);
+    }
+    throw new Error(`讀取這個 zip 檔案（約 ${sizeMB} MB）時發生錯誤：${raw || (err && err.name) || '未知錯誤'}。若檔案很大，建議改用下方「上傳解壓縮後的資料夾」功能。`);
+  }
+  const tweetsEntryName = Object.keys(zip.files).find(name=>
+    /(^|\/)data\/tweets\.js$/i.test(name) || /(^|\/)tweets\.js$/i.test(name)
+  );
+  if(!tweetsEntryName) throw new Error('在這個壓縮檔裡找不到 data/tweets.js，請確認上傳的是完整的封存 zip。');
+  const raw = await zip.files[tweetsEntryName].async('string');
+  const tweets = parseTweetArchiveText(raw);
+
+  setImportProgress(0.15);
+  if(statusEl) statusEl.textContent = `解析出 ${tweets.length} 篇推文，正在整理照片…`;
+  const mediaByTweetId = new Map();
+  let videoCount = 0;
+  const mediaNames = Object.keys(zip.files).filter(name=> /\/data\/tweets_media\/[^/]+$/i.test('/' + name));
+  mediaNames.sort();
+  for(const name of mediaNames){
+    const base = name.split('/').pop();
+    const m = base.match(/^(\d+)-(.+)$/);
+    if(!m) continue;
+    const tweetId = m[1];
+    if(!IMAGE_EXT_RE.test(base)){ videoCount++; continue; }
+    if(!mediaByTweetId.has(tweetId)) mediaByTweetId.set(tweetId, []);
+    const arr = mediaByTweetId.get(tweetId);
+    if(arr.length >= MAX_IMAGES) continue;
+    arr.push(name);
+  }
+  const getBlob = (path)=> zip.files[path].async('blob');
+  return { tweets, getBlob, mediaByTweetId, videoCount };
+}
+
+// 當 zip 本身損毀/讀不出來時的替代方案：讓使用者直接選取「解壓縮後的封存資料夾」，
+// 瀏覽器會用資料夾裡每一個檔案各自的 File 物件給我們，完全不需要解析 zip 中央目錄，
+// 因此不會受檔案是否損毀、是否過大而失敗。
+async function extractFromArchiveFolder(fileList, statusEl){
+  setImportProgress(0);
+  const files = Array.from(fileList);
+  const tweetsFile = files.find(f=>{
+    const p = (f.webkitRelativePath || f.name).replace(/\\/g,'/');
+    return /(^|\/)data\/tweets\.js$/i.test(p) || /(^|\/)tweets\.js$/i.test(p);
+  });
+  if(!tweetsFile) throw new Error('在這個資料夾裡找不到 data/tweets.js，請確認選取的是解壓縮後、完整的封存資料夾。');
+  const raw = await tweetsFile.text();
+  const tweets = parseTweetArchiveText(raw);
+
+  setImportProgress(0.05);
+  if(statusEl) statusEl.textContent = `解析出 ${tweets.length} 篇推文，正在整理照片…`;
+  const mediaByTweetId = new Map();
+  const pathToFile = new Map();
+  let videoCount = 0;
+  for(const f of files){
+    const p = (f.webkitRelativePath || f.name).replace(/\\/g,'/');
+    if(!/\/data\/tweets_media\/[^/]+$/i.test('/' + p)) continue;
+    const base = p.split('/').pop();
+    const m = base.match(/^(\d+)-(.+)$/);
+    if(!m) continue;
+    const tweetId = m[1];
+    if(!IMAGE_EXT_RE.test(base)){ videoCount++; continue; }
+    if(!mediaByTweetId.has(tweetId)) mediaByTweetId.set(tweetId, []);
+    const arr = mediaByTweetId.get(tweetId);
+    if(arr.length >= MAX_IMAGES) continue;
+    arr.push(p);
+    pathToFile.set(p, f);
+  }
+  const getBlob = (path)=> Promise.resolve(pathToFile.get(path));
+  return { tweets, getBlob, mediaByTweetId, videoCount };
+}
+
+tweetImportInput.addEventListener('change', async (e)=>{
+  const file = e.target.files[0];
+  tweetImportInput.value = '';
+  const statusEl = document.getElementById('tweetImportStatus');
+  const btn = document.getElementById('tweetImportBtn');
+  if(!file){
+    // 使用者按了取消，不算錯誤，什麼都不用顯示。
+    return;
+  }
+  if(btn) btn.disabled = true;
+  if(statusEl) statusEl.textContent = `已選擇「${file.name}」，開始讀取…`;
+  setImportProgress(0);
+  try{
+    const isZip = /\.zip$/i.test(file.name) || /zip/i.test(file.type);
+    if(isZip){
+      if(statusEl) statusEl.textContent = '讀取壓縮檔中，檔案較大時可能要一點時間，請耐心等候…';
+      const { tweets, getBlob, mediaByTweetId, videoCount } = await extractFromArchiveZip(file, statusEl);
+      if(statusEl) statusEl.textContent = `準備匯入 ${tweets.length} 篇推文…`;
+      await importTweetArchive(tweets, statusEl, { getBlob, mediaByTweetId, videoCount }, 0.15);
+    } else {
+      if(statusEl) statusEl.textContent = '讀取檔案中…';
+      const raw = await readFileWithProgress(file, (p)=> setImportProgress(p * 0.1), true);
+      const tweets = parseTweetArchiveText(raw);
+      if(statusEl) statusEl.textContent = `解析出 ${tweets.length} 篇推文，開始匯入…`;
+      await importTweetArchive(tweets, statusEl, null, 0.1);
+    }
+  }catch(err){
+    console.error('Twitter/X 匯入（zip）失敗：', err);
+    setImportProgress(null);
+    const msg = (err && err.message ? err.message : String(err)) || '匯入失敗，請確認檔案格式。';
+    if(statusEl) statusEl.textContent = msg;
+    showToast(msg);
+  }finally{
+    if(btn) btn.disabled = false;
+  }
+});
+
+// 部分瀏覽器（例如較舊版本或非 Chromium 系列）不支援資料夾選取，
+// 先偵測一次，選不到資料夾時直接告知使用者，而不是讓按鈕點下去卻毫無反應。
+function supportsFolderUpload(){
+  const test = document.createElement('input');
+  return 'webkitdirectory' in test;
+}
+
+tweetImportFolderInput.addEventListener('change', async (e)=>{
+  const fileList = e.target.files;
+  tweetImportFolderInput.value = '';
+  const statusEl = document.getElementById('tweetImportStatus');
+  const btn = document.getElementById('tweetImportFolderBtn');
+  // 立刻先給視覺回饋：不管接下來處理要花多久，使用者至少能馬上看到「有反應」。
+  if(statusEl) statusEl.textContent = fileList && fileList.length
+    ? `已選取資料夾，偵測到 ${fileList.length} 個檔案，開始讀取…`
+    : '沒有偵測到任何檔案。';
+  setImportProgress(0);
+  if(!fileList || !fileList.length){
+    const msg = '這個資料夾裡沒有偵測到任何檔案，請確認：①選的是「解壓縮後」的資料夾本身（不是 zip）；②資料夾裡真的有內容；③瀏覽器有正常支援資料夾上傳（建議用電腦版 Chrome 或 Edge）。';
+    setImportProgress(null);
+    if(statusEl) statusEl.textContent = msg;
+    showToast(msg);
+    return;
+  }
+  if(btn) btn.disabled = true;
+  try{
+    if(statusEl) statusEl.textContent = `讀取資料夾中…（共 ${fileList.length} 個檔案）`;
+    const { tweets, getBlob, mediaByTweetId, videoCount } = await extractFromArchiveFolder(fileList, statusEl);
+    if(statusEl) statusEl.textContent = `準備匯入 ${tweets.length} 篇推文…`;
+    await importTweetArchive(tweets, statusEl, { getBlob, mediaByTweetId, videoCount }, 0.05);
+  }catch(err){
+    console.error('Twitter/X 匯入（資料夾）失敗：', err);
+    setImportProgress(null);
+    const msg = (err && err.message ? err.message : String(err)) || '匯入失敗，請確認選取的是解壓縮後的封存資料夾。';
+    if(statusEl) statusEl.textContent = msg;
+    showToast(msg);
+  }finally{
+    if(btn) btn.disabled = false;
+  }
+});
+
+async function deleteDriveFile(fileId){
+  if(!fileId || !gDriveAccessToken) return;
+  try{
+    await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + gDriveAccessToken }
+    });
+  }catch(err){}
+}
+
+let driveSyncing = false;
+// 連上雲端硬碟後，把資料夾裡本機還沒有的 entry-*.json 抓回來、還原成文章。
+// 只補「本機沒有」的，不會覆蓋本機已經存在的版本，避免互相覆蓋。
+// silent=true（開啟頁面時的自動嘗試）不會跳任何提示，失敗就默默放棄；
+// silent=false（手動按「連接」或「立即同步」）會明確告訴使用者結果，方便排查問題。
+// onProgress(info) 是選用的進度回報：{ phase:'listing' }、{ phase:'restoring', done, total }、
+// { phase:'done', restored, failed, total }，讓呼叫端可以畫進度條。
+async function syncFromDrive(silent, onProgress){
+  if(!gDriveAccessToken){
+    if(!silent) showToast('尚未連接 Google 雲端硬碟，請先點「連接」完成授權。');
+    return;
+  }
+  if(driveSyncing) return;
+  driveSyncing = true;
+  try{
+    if(onProgress) onProgress({ phase:'listing' });
+    const folderId = await ensureDriveFolder();
+    const q = encodeURIComponent(`'${folderId}' in parents and mimeType='application/json' and trashed=false`);
+    const listRes = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,createdTime)&pageSize=1000`, {
+      headers: { 'Authorization': 'Bearer ' + gDriveAccessToken }
+    });
+    if(!listRes.ok){
+      const errBody = await listRes.text().catch(()=> '');
+      console.warn('雲端硬碟列表失敗', listRes.status, errBody);
+      throw new Error('drive-list-failed:' + listRes.status);
+    }
+    const listData = await listRes.json();
+    const files = (listData.files || []).filter(f => /^entry-.+\.json$/.test(f.name));
+    const localIds = new Set(entries.map(e => e.id));
+    const missingFiles = files.filter(f => !localIds.has(f.name.replace(/^entry-/, '').replace(/\.json$/, '')));
+    let restored = 0;
+    let failed = 0;
+    // 一批同時抓 6 篇（Promise.all 平行送出 fetch），這批全部處理完才送下一批，
+    // 比原本一篇一篇排隊抓快很多，尤其是本機還沒有的文章篇數多的時候。
+    // 批次之間仍然依序進行，避免一次對 Drive API 送出過多同時請求。
+    const BATCH_SIZE = 6;
+    if(onProgress) onProgress({ phase:'restoring', done:0, total:missingFiles.length });
+    for(let i = 0; i < missingFiles.length; i += BATCH_SIZE){
+      const batch = missingFiles.slice(i, i + BATCH_SIZE);
+      const results = await Promise.all(batch.map(async (file)=>{
+        const id = file.name.replace(/^entry-/, '').replace(/\.json$/, '');
+        try{
+          const fileRes = await fetch(`https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`, {
+            headers: { 'Authorization': 'Bearer ' + gDriveAccessToken }
+          });
+          if(!fileRes.ok) return { ok:false };
+          const data = await fileRes.json();
+          const entry = {
+            id: data.id || id,
+            date: data.date || todayStr(),
+            text: data.text || '',
+            images: data.images || [],
+            videos: data.videos || [],
+            quote: data.quote || null,
+            wax: data.wax || { a: 0, b: 0 },
+            createdAt: data.createdAt || Date.now(),
+            driveBackupId: file.id
+          };
+          return { ok:true, entry };
+        }catch(err){
+          console.warn('還原文章失敗：', file.name, err);
+          return { ok:false };
+        }
+      }));
+      for(const result of results){
+        if(result.ok){
+          entries.push(result.entry);
+          localIds.add(result.entry.id);
+          try{
+            await persistEntry(result.entry);
+            restored++;
+          }catch(err){
+            console.warn('還原文章寫入本機失敗：', result.entry.id, err);
+            entries.pop();
+            localIds.delete(result.entry.id);
+            failed++;
+          }
+        } else {
+          failed++;
+        }
+      }
+      if(onProgress) onProgress({ phase:'restoring', done: Math.min(i + BATCH_SIZE, missingFiles.length), total: missingFiles.length });
+    }
+    if(restored > 0){
+      entries.sort((a,b)=> (b.createdAt||0) - (a.createdAt||0));
+      await persistIndex();
+      renderEntries();
+    }
+    try{ await window.storage.set(GDRIVE_WAS_CONNECTED_KEY, '1', false); }catch(err){}
+    if(onProgress) onProgress({ phase:'done', restored, failed, total: missingFiles.length });
+    if(!silent){
+      if(restored > 0){
+        showToast(`已從雲端硬碟同步回 ${restored} 篇文章${failed ? `（${failed} 篇還原失敗）` : ''}。`);
+      } else if(failed > 0){
+        showToast(`同步時有 ${failed} 篇文章讀取失敗，請稍後再試一次。`);
+      } else if(files.length === 0){
+        showToast('雲端硬碟裡目前沒有可還原的文章備份（只有這次更新之後儲存的文章才會有完整備份）。');
+      } else {
+        showToast('雲端硬碟裡的文章本機都已經有了，沒有新增內容。');
+      }
+    }
+  }catch(err){
+    console.warn('同步雲端硬碟失敗：', err);
+    if(onProgress) onProgress({ phase:'error' });
+    if(!silent){
+      showToast('同步雲端硬碟失敗，請確認網路連線，或重新連接一次帳號。');
+    }
+  }
+  driveSyncing = false;
+}
+
+function openDriveSettings(){
+  modalRoot.innerHTML = `
+    <div class="modal-bg">
+      <div class="drive-settings-modal">
+        <h3>Google 雲端硬碟設定</h3>
+        <p>連接後，日記文字、圖片與影片都會備份到你自己 Google 雲端硬碟裡的「為歡幾何 手記」資料夾；重新整理、換裝置或重新安裝後，只要連上同一個 Google 帳號，之前備份過的文章與圖片也會自動同步回來。需要先在 <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Google Cloud Console</a> 建立一組「OAuth 用戶端 ID」（應用程式類型選網頁應用程式），並把目前網址加入「已授權的 JavaScript 來源」。</p>
+        <label for="driveClientIdInput">OAuth 用戶端 ID</label>
+        <input type="text" id="driveClientIdInput" placeholder="xxxxxxxx.apps.googleusercontent.com" value="${escapeHtml(gDriveClientId)}">
+        <div class="drive-status-row">
+          <span class="drive-status-dot ${gDriveAccessToken ? 'on' : ''}"></span>
+          <span>${gDriveAccessToken ? '已連接雲端硬碟' : '尚未連接'}</span>
+        </div>
+        <div class="drive-settings-actions">
+          <button id="driveSaveConnectBtn">儲存並連接</button>
+          <button id="driveSyncNowBtn" ${gDriveAccessToken ? '' : 'style="display:none;"'}>立即同步</button>
+          <button id="driveBackfillBtn" ${gDriveAccessToken ? '' : 'style="display:none;"'}>補傳未同步文章</button>
+          <button id="driveDisconnectBtn" class="drive-disconnect" ${gDriveAccessToken ? '' : 'style="display:none;"'}>中斷連接</button>
+          <button id="driveCloseBtn">關閉</button>
+        </div>
+        <div id="driveSyncStatus" class="drive-import-status"></div>
+        <div id="driveSyncProgress" class="tweet-import-progress"><div class="bar" id="driveSyncProgressBar"></div></div>
+        <div id="driveBackfillStatus" class="drive-import-status"></div>
+        <div id="driveBackfillProgress" class="tweet-import-progress"><div class="bar" id="driveBackfillProgressBar"></div></div>
+        <div class="drive-import-row">
+          <p>把 Twitter/X 封存裡的舊推文，一篇篇化成引用式的羊皮紙紀錄。<b>建議直接上傳整個封存 zip</b>（連照片一起匯入）；也可以只上傳封存資料夾中的 <code>data/tweets.js</code>（純文字，不含照片）。<b>不要</b>上傳最外層那個 <code>Your archive.html</code>，那只是空殼頁面。若某則推文是回覆自己另一則已匯入的舊推文，會自動把被回覆的那篇一起顯示在引用區塊裡，並可點擊跳過去；zip 內夾帶的照片會壓縮後存成隨文附圖，影片目前尚未支援。若 zip 太大或下載不完整導致讀取失敗，可以先在電腦上把 zip 解壓縮，再改用下面的「上傳解壓縮後的資料夾」，一樣可以連照片一起匯入。</p>
+          <button id="tweetImportBtn">📜 匯入 Twitter/X 舊文（zip）</button>
+          <button id="tweetImportFolderBtn">📂 上傳解壓縮後的資料夾（zip 失敗時）</button>
+          <div id="tweetImportStatus" class="drive-import-status"></div>
+          <div id="tweetImportProgress" class="tweet-import-progress"><div class="bar" id="tweetImportProgressBar"></div></div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('driveCloseBtn').addEventListener('click', ()=> modalRoot.innerHTML='');
+  document.getElementById('driveDisconnectBtn').addEventListener('click', ()=>{
+    disconnectDrive();
+    modalRoot.innerHTML='';
+  });
+  const syncNowBtn = document.getElementById('driveSyncNowBtn');
+  if(syncNowBtn){
+    syncNowBtn.addEventListener('click', async ()=>{
+      const statusEl = document.getElementById('driveSyncStatus');
+      const progressWrap = document.getElementById('driveSyncProgress');
+      const progressBar = document.getElementById('driveSyncProgressBar');
+      syncNowBtn.disabled = true;
+      syncNowBtn.textContent = '同步中…';
+      if(progressWrap) progressWrap.classList.add('show');
+      if(progressBar) progressBar.style.width = '0%';
+      if(statusEl) statusEl.textContent = '正在檢查雲端硬碟裡有哪些文章…';
+      await syncFromDrive(false, (info)=>{
+        if(!statusEl || !progressBar) return;
+        if(info.phase === 'listing'){
+          statusEl.textContent = '正在檢查雲端硬碟裡有哪些文章…';
+          progressBar.style.width = '0%';
+        } else if(info.phase === 'restoring'){
+          if(info.total === 0){
+            statusEl.textContent = '本機文章都已經是最新的了。';
+            progressBar.style.width = '100%';
+          } else {
+            const pct = Math.round((info.done / info.total) * 100);
+            statusEl.textContent = `還原中… ${info.done} / ${info.total} 篇`;
+            progressBar.style.width = pct + '%';
+          }
+        } else if(info.phase === 'done'){
+          progressBar.style.width = '100%';
+          statusEl.textContent = info.total === 0
+            ? '本機文章都已經是最新的了。'
+            : `完成：還原 ${info.restored} 篇${info.failed ? `，失敗 ${info.failed} 篇` : ''}。`;
+        } else if(info.phase === 'error'){
+          statusEl.textContent = '同步失敗，請稍後再試一次。';
+        }
+      });
+      syncNowBtn.disabled = false;
+      syncNowBtn.textContent = '立即同步';
+    });
+  }
+  const backfillBtn = document.getElementById('driveBackfillBtn');
+  if(backfillBtn){
+    backfillBtn.addEventListener('click', async ()=>{
+      const statusEl = document.getElementById('driveBackfillStatus');
+      const progressWrap = document.getElementById('driveBackfillProgress');
+      const progressBar = document.getElementById('driveBackfillProgressBar');
+      backfillBtn.disabled = true;
+      backfillBtn.textContent = '補傳中…';
+      if(progressWrap) progressWrap.classList.add('show');
+      if(progressBar) progressBar.style.width = '0%';
+      await backfillMissingDriveBackups(statusEl, progressBar);
+      backfillBtn.disabled = false;
+      backfillBtn.textContent = '補傳未同步文章';
+    });
+  }
+  document.getElementById('driveSaveConnectBtn').addEventListener('click', async ()=>{
+    const val = document.getElementById('driveClientIdInput').value.trim();
+    if(!val) return;
+    gDriveClientId = val;
+    try{
+      await window.storage.set(GDRIVE_CLIENT_ID_KEY, gDriveClientId, false);
+    }catch(err){}
+    const btn = document.getElementById('driveSaveConnectBtn');
+    if(btn){ btn.disabled = true; btn.textContent = '連接中…'; }
+    await connectDrive();
+    // 連接完成後重新畫一次這個設定視窗，讓使用者能立刻看到
+    // 「已連接雲端硬碟」的狀態和「立即同步」按鈕，不用自己重新打開。
+    openDriveSettings();
+  });
+  const tweetImportBtn = document.getElementById('tweetImportBtn');
+  if(tweetImportBtn){
+    tweetImportBtn.addEventListener('click', ()=> tweetImportInput.click());
+  }
+  const tweetImportFolderBtn = document.getElementById('tweetImportFolderBtn');
+  if(tweetImportFolderBtn){
+    tweetImportFolderBtn.addEventListener('click', ()=>{
+      if(!supportsFolderUpload()){
+        const msg = '這個瀏覽器不支援資料夾上傳，建議改用電腦版 Chrome 或 Edge，或是先只上傳封存資料夾裡的 data/tweets.js（純文字，不含照片）。';
+        const statusEl = document.getElementById('tweetImportStatus');
+        if(statusEl) statusEl.textContent = msg;
+        showToast(msg);
+        return;
+      }
+      tweetImportFolderInput.click();
+    });
+  }
+}
+
+cloudBtn.addEventListener('click', openDriveSettings);
+loadDriveSettings();
+
+// 如果之前成功連接過雲端硬碟，重新打開網頁時嘗試「安靜地」（不彈出同意畫面）
+// 要一次新的 access token，成功的話就自動把雲端硬碟裡的文章同步回來。
+// 失敗（例如 token 已失效、需要重新同意）就默默放棄，使用者仍可手動按「連接」。
+async function trySilentDriveReconnect(){
+  try{
+    const wasConnectedRes = await window.storage.get(GDRIVE_WAS_CONNECTED_KEY, false).catch(()=>null);
+    const wasConnected = wasConnectedRes && wasConnectedRes.value === '1';
+    if(!wasConnected || !gDriveClientId) return;
+    await requestDriveToken(false);
+    await ensureDriveFolder();
+    await syncFromDrive(true);
+  }catch(err){
+    // 靜默失敗即可，使用者需要時可以自己按「連接」重新授權。
+  }
+}
+
+// 分頁切回前景、或視窗重新取得焦點時，順便同步一次——
+// 不用等到下一次定時同步，就能盡快看到在其他裝置上新增的內容。
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'visible' && gDriveAccessToken) syncFromDrive(true);
+});
+window.addEventListener('focus', ()=>{
+  if(gDriveAccessToken) syncFromDrive(true);
+});
+// ==================== / Google Drive ====================
+
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+dateInput.value = todayStr();
+
+textInput.addEventListener('input', ()=>{
+  charCount.textContent = textInput.value.length + ' 字';
+});
+
+function applyWaxPreview(){
+  saveBtn.style.setProperty('--wax-a', currentWax.a);
+  saveBtn.style.setProperty('--wax-b', currentWax.b);
+  waxTriggerBtn.style.setProperty('--trig-a', currentWax.a);
+  waxTriggerBtn.style.setProperty('--trig-b', currentWax.b);
+}
+
+function randomWaxColor(){
+  const hue = Math.floor(Math.random()*360);
+  const sat = 45 + Math.floor(Math.random()*25);
+  const light = 32 + Math.floor(Math.random()*14);
+  return `hsl(${hue}, ${sat}%, ${light}%)`;
+}
+
+waxDiceBtn.addEventListener('click', ()=>{
+  currentWax = { a: randomWaxColor(), b: randomWaxColor() };
+  applyWaxPreview();
+  waxDiceBtn.animate(
+    [{ transform:'rotate(0deg) scale(1)' }, { transform:'rotate(340deg) scale(1.25)' }, { transform:'rotate(360deg) scale(1)' }],
+    { duration:500, easing:'ease-out' }
+  );
+});
+
+waxTriggerBtn.addEventListener('click', ()=> openColorPicker());
+
+function openColorPicker(initialColor, onConfirm){
+  let pending = initialColor || currentWax.a;
+  modalRoot.innerHTML = `
+    <div class="modal-bg">
+      <div class="color-picker-modal">
+        <h3>選取顏色</h3>
+        <div class="color-grid" id="colorGrid"></div>
+        <div class="color-picker-footer">
+          <button class="color-custom-link" id="colorCustomLink">自訂</button>
+          <div class="color-selected-preview">
+            <span>已選顏色</span>
+            <span class="color-selected-swatch" id="colorSelectedSwatch"></span>
+          </div>
+        </div>
+        <div class="custom-color-panel" id="customColorPanel" style="display:none;">
+          <div class="csq" id="csq">
+            <canvas id="csqCanvas" width="240" height="140"></canvas>
+            <div class="csq-thumb" id="csqThumb"></div>
+          </div>
+          <div class="hue-strip" id="hueStrip">
+            <div class="hue-thumb" id="hueThumb"></div>
+          </div>
+          <div class="hex-row">
+            <span>#</span>
+            <input type="text" id="hexInput" class="hex-input" maxlength="7" placeholder="8B6B23" autocomplete="off">
+          </div>
+        </div>
+        <div class="color-picker-actions">
+          <button id="colorCancelBtn">取消</button>
+          <button id="colorConfirmBtn">設定</button>
+        </div>
+      </div>
+    </div>`;
+
+  const colorGrid = document.getElementById('colorGrid');
+  const colorSelectedSwatch = document.getElementById('colorSelectedSwatch');
+  const customColorPanel = document.getElementById('customColorPanel');
+  const csq = document.getElementById('csq');
+  const csqCanvas = document.getElementById('csqCanvas');
+  const csqCtx = csqCanvas.getContext('2d');
+  const csqThumb = document.getElementById('csqThumb');
+  const hueStrip = document.getElementById('hueStrip');
+  const hueThumb = document.getElementById('hueThumb');
+  const hexInput = document.getElementById('hexInput');
+
+  function updatePreview(){
+    colorSelectedSwatch.style.background = pending;
+  }
+
+  function markActiveSwatch(colorVal){
+    colorGrid.querySelectorAll('.color-swatch').forEach(el=>{
+      el.classList.toggle('active', el.getAttribute('data-color').toLowerCase() === (colorVal||'').toLowerCase());
+    });
+  }
+
+  PRESET_COLORS.forEach(p=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'color-swatch';
+    btn.title = p.name;
+    btn.setAttribute('data-color', p.color);
+    btn.style.background = p.color;
+    btn.addEventListener('click', ()=>{
+      pending = p.color;
+      updatePreview();
+      markActiveSwatch(pending);
+    });
+    colorGrid.appendChild(btn);
+  });
+
+  updatePreview();
+  markActiveSwatch(pending);
+
+  // ---- Custom hue / saturation-value picker (no browser preset swatches) ----
+  function parseToRgb(str){
+    const d = document.createElement('div');
+    d.style.color = str;
+    document.body.appendChild(d);
+    const rgb = getComputedStyle(d).color;
+    document.body.removeChild(d);
+    const m = rgb.match(/[\d.]+/g).map(Number);
+    return { r:m[0]||0, g:m[1]||0, b:m[2]||0 };
+  }
+  function rgbToHex(r,g,b){
+    return '#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
+  }
+  function rgbToHsv(r,g,b){
+    r/=255; g/=255; b/=255;
+    const max=Math.max(r,g,b), min=Math.min(r,g,b), d=max-min;
+    let h=0;
+    if(d!==0){
+      if(max===r) h = 60*(((g-b)/d)%6);
+      else if(max===g) h = 60*(((b-r)/d)+2);
+      else h = 60*(((r-g)/d)+4);
+    }
+    if(h<0) h+=360;
+    const s = max===0 ? 0 : d/max;
+    const v = max;
+    return {h,s,v};
+  }
+  function hsvToRgb(h,s,v){
+    const c=v*s, x=c*(1-Math.abs((h/60)%2-1)), m=v-c;
+    let r,g,b;
+    if(h<60){r=c;g=x;b=0;} else if(h<120){r=x;g=c;b=0;}
+    else if(h<180){r=0;g=c;b=x;} else if(h<240){r=0;g=x;b=c;}
+    else if(h<300){r=x;g=0;b=c;} else {r=c;g=0;b=x;}
+    return { r:(r+m)*255, g:(g+m)*255, b:(b+m)*255 };
+  }
+
+  let curH=0, curS=1, curV=1;
+
+  function drawSquare(h){
+    const w = csqCanvas.width, hh = csqCanvas.height;
+    const hueRgb = hsvToRgb(h,1,1);
+    const satGrad = csqCtx.createLinearGradient(0,0,w,0);
+    satGrad.addColorStop(0,'#fff');
+    satGrad.addColorStop(1, `rgb(${hueRgb.r},${hueRgb.g},${hueRgb.b})`);
+    csqCtx.fillStyle = satGrad;
+    csqCtx.fillRect(0,0,w,hh);
+    const valGrad = csqCtx.createLinearGradient(0,0,0,hh);
+    valGrad.addColorStop(0,'rgba(0,0,0,0)');
+    valGrad.addColorStop(1,'#000');
+    csqCtx.fillStyle = valGrad;
+    csqCtx.fillRect(0,0,w,hh);
+  }
+
+  function currentHex(){
+    const rgb = hsvToRgb(curH, curS, curV);
+    return rgbToHex(rgb.r, rgb.g, rgb.b);
+  }
+
+  function applyFromPicker(){
+    pending = currentHex();
+    hexInput.value = pending.slice(1).toUpperCase();
+    updatePreview();
+    markActiveSwatch(pending);
+  }
+
+  function positionThumbs(){
+    const sqRect = csq.getBoundingClientRect();
+    csqThumb.style.left = (curS * sqRect.width) + 'px';
+    csqThumb.style.top = ((1-curV) * sqRect.height) + 'px';
+    const hueRect = hueStrip.getBoundingClientRect();
+    hueThumb.style.left = ((curH/360) * hueRect.width) + 'px';
+  }
+
+  function initFromColor(colorStr){
+    const rgb = parseToRgb(colorStr);
+    const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+    curH = hsv.h; curS = hsv.s || 0; curV = hsv.v || 1;
+    drawSquare(curH);
+    positionThumbs();
+    hexInput.value = currentHex().slice(1).toUpperCase();
+  }
+
+  function dragSquare(clientX, clientY){
+    const rect = csq.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX-rect.left,0), rect.width);
+    const y = Math.min(Math.max(clientY-rect.top,0), rect.height);
+    curS = rect.width ? x/rect.width : 0;
+    curV = rect.height ? 1-(y/rect.height) : 1;
+    csqThumb.style.left = x+'px';
+    csqThumb.style.top = y+'px';
+    applyFromPicker();
+  }
+  csq.addEventListener('pointerdown', e=>{
+    csq.setPointerCapture(e.pointerId);
+    dragSquare(e.clientX, e.clientY);
+    const move = ev=> dragSquare(ev.clientX, ev.clientY);
+    csq.addEventListener('pointermove', move);
+    csq.addEventListener('pointerup', ()=> csq.removeEventListener('pointermove', move), { once:true });
+  });
+
+  function dragHue(clientX){
+    const rect = hueStrip.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX-rect.left,0), rect.width);
+    curH = rect.width ? (x/rect.width)*360 : 0;
+    hueThumb.style.left = x+'px';
+    drawSquare(curH);
+    applyFromPicker();
+  }
+  hueStrip.addEventListener('pointerdown', e=>{
+    hueStrip.setPointerCapture(e.pointerId);
+    dragHue(e.clientX);
+    const move = ev=> dragHue(ev.clientX);
+    hueStrip.addEventListener('pointermove', move);
+    hueStrip.addEventListener('pointerup', ()=> hueStrip.removeEventListener('pointermove', move), { once:true });
+  });
+
+  hexInput.addEventListener('input', ()=>{
+    const v = hexInput.value.replace(/[^0-9a-fA-F]/g,'').slice(0,6);
+    if(v.length===6){
+      const hex = '#'+v;
+      const rgb = parseToRgb(hex);
+      const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+      curH = hsv.h; curS = hsv.s || 0; curV = hsv.v || 1;
+      drawSquare(curH);
+      positionThumbs();
+      pending = hex;
+      updatePreview();
+      markActiveSwatch(pending);
+    }
+  });
+
+  document.getElementById('colorCustomLink').addEventListener('click', ()=>{
+    const willShow = customColorPanel.style.display === 'none';
+    customColorPanel.style.display = willShow ? 'block' : 'none';
+    if(willShow) initFromColor(pending);
+  });
+
+  document.getElementById('colorCancelBtn').addEventListener('click', ()=> modalRoot.innerHTML='');
+  document.getElementById('colorConfirmBtn').addEventListener('click', ()=>{
+    if(onConfirm){
+      modalRoot.innerHTML='';
+      onConfirm(pending);
+    } else {
+      currentWax = { a: pending, b: pending };
+      applyWaxPreview();
+      modalRoot.innerHTML='';
+    }
+  });
+}
+
+// 更改「已經發布」那篇文章的封蠟顏色：跟新增文章共用同一個選色視窗，
+// 選定後直接更新這篇 entry 的 wax 並存檔、重新渲染印章顏色。
+async function changeEntryWaxColor(entry){
+  const initial = (entry.wax && entry.wax.a) || PRESET_COLORS[0].color;
+  openColorPicker(initial, async (color)=>{
+    entry.wax = { a: color, b: color };
+    entry.driveDirty = true;
+    try{
+      await persistEntry(entry);
+    }catch(err){
+      console.error('封蠟顏色儲存失敗', err);
+      showToast('封蠟顏色更新失敗，請再試一次。');
+      return;
+    }
+    renderEntries();
+    // 本機存好之後，順手把雲端硬碟上的那份備份也同步更新新的封蠟顏色，
+    // 不用等使用者自己再按一次「立即同步」或「補傳未同步文章」。
+    // 這裡刻意不 await、失敗也只是靜靜記錄，避免封蠟顏色明明已經存好在本機、
+    // 卻因為網路不穩讓使用者以為存檔失敗。
+    if(gDriveAccessToken){
+      backupOneEntry(entry).catch(err=>{
+        console.warn('封蠟顏色雲端備份同步失敗：', entry.id, err);
+      });
+    }
+  });
+}
+
+applyWaxPreview();
+renderSealPattern();
+
+const snowflakeChars = ['❄', '❅', '❆', '•'];
+function renderSnowfall(){
+  const container = document.getElementById('snowfall');
+  if(!container) return;
+  const count = window.innerWidth < 520 ? 26 : 44;
+  const frag = document.createDocumentFragment();
+  for(let i=0; i<count; i++){
+    const el = document.createElement('span');
+    el.className = 'snowflake';
+    el.textContent = snowflakeChars[randInt(0, snowflakeChars.length-1)];
+    const size = randFloat(10, 22);
+    const duration = randFloat(9, 22);
+    const delay = -randFloat(0, duration);
+    const sway = randInt(-60, 60);
+    const opacity = randFloat(0.45, 0.95);
+    el.style.left = randFloat(0, 100) + '%';
+    el.style.fontSize = size.toFixed(1) + 'px';
+    el.style.animationDuration = duration.toFixed(2) + 's';
+    el.style.animationDelay = delay.toFixed(2) + 's';
+    el.style.setProperty('--sway', sway + 'px');
+    el.style.setProperty('--op', opacity.toFixed(2));
+    frag.appendChild(el);
+  }
+  container.innerHTML = '';
+  container.appendChild(frag);
+}
+renderSnowfall();
+
+searchInput.addEventListener('input', ()=>{
+  searchQuery = searchInput.value.trim().toLowerCase();
+  searchClear.classList.toggle('show', searchQuery.length > 0);
+  renderEntries();
+});
+searchClear.addEventListener('click', ()=>{
+  searchInput.value = '';
+  searchQuery = '';
+  searchClear.classList.remove('show');
+  renderEntries();
+});
+
+const quotePreview = document.getElementById('quotePreview');
+const quoteTriggerBtn = document.getElementById('quoteTriggerBtn');
+quoteTriggerBtn.addEventListener('click', openQuotePicker);
+
+function openQuotePicker(){
+  if(entries.length===0){
+    showModal('目前還沒有其他文章可以引用喔。', async ()=>{});
+    return;
+  }
+  function buildItems(list){
+    if(list.length===0) return `<div class="picker-empty">沒有找到符合的文章</div>`;
+    return list.map(e=>{
+      const excerpt = (entryBodyText(e) || '（僅有圖片）').slice(0,40);
+      return `<div class="picker-item" data-id="${e.id}">
+        <div class="pi-date">${e.date}</div>
+        <div class="pi-text">${escapeHtml(excerpt)}</div>
+      </div>`;
+    }).join('');
+  }
+  modalRoot.innerHTML = `
+    <div class="modal-bg">
+      <div class="picker-modal">
+        <h3>選一篇文章來引用</h3>
+        <div class="picker-search-wrap">
+          <input type="text" id="pickerSearch" class="picker-search" placeholder="搜尋日期或文字內容…" autocomplete="off">
+        </div>
+        <div class="picker-list" id="pickerList">${buildItems(entries)}</div>
+        <button class="picker-cancel">取消</button>
+      </div>
+    </div>`;
+
+  function bindItemClicks(){
+    modalRoot.querySelectorAll('.picker-item').forEach(node=>{
+      node.addEventListener('click', ()=>{
+        const id = node.getAttribute('data-id');
+        const entry = entries.find(e=>e.id===id);
+        if(entry){
+          selectedQuote = { id: entry.id, date: entry.date, text: entryBodyText(entry).slice(0,120) };
+          renderQuotePreview();
+        }
+        modalRoot.innerHTML = '';
+      });
+    });
+  }
+  bindItemClicks();
+
+  const pickerSearch = document.getElementById('pickerSearch');
+  pickerSearch.addEventListener('input', ()=>{
+    const q = pickerSearch.value.trim().toLowerCase();
+    const filtered = q
+      ? entries.filter(e=> entryBodyText(e).toLowerCase().includes(q) || (e.date||'').toLowerCase().includes(q))
+      : entries;
+    document.getElementById('pickerList').innerHTML = buildItems(filtered);
+    bindItemClicks();
+  });
+  pickerSearch.focus();
+
+  modalRoot.querySelector('.picker-cancel').addEventListener('click', ()=> modalRoot.innerHTML='');
+}
+
+function renderQuotePreview(){
+  if(!selectedQuote){
+    quotePreview.style.display = 'none';
+    quotePreview.innerHTML = '';
+    return;
+  }
+  quotePreview.style.display = 'block';
+  quotePreview.innerHTML = `
+    <button class="qp-remove" id="qpRemove">✕</button>
+    <div class="qp-date">引自 ${selectedQuote.date}</div>
+    <div class="qp-text">${escapeHtml(selectedQuote.text)}${selectedQuote.text.length>=120?'…':''}</div>
+  `;
+  document.getElementById('qpRemove').addEventListener('click', ()=>{
+    selectedQuote = null;
+    renderQuotePreview();
+  });
+}
+
+dropzone.addEventListener('click', ()=> fileInput.click());
+dropzone.addEventListener('dragover', e=>{ e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', ()=> dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e=>{
+  e.preventDefault(); dropzone.classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', e=> handleFiles(e.target.files));
+
+function handleFiles(fileList){
+  const files = Array.from(fileList).filter(f=>f.type.startsWith('image/'));
+  for(const f of files){
+    if(pendingImages.length >= MAX_IMAGES) break;
+    const slot = pendingImages.length;
+    pendingImages.push(null);
+    pendingOriginals.push(null);
+    const job = processImage(f).then(({thumb, original})=>{
+      pendingImages[slot] = thumb;
+      pendingOriginals[slot] = original;
+      renderPreview();
+    }).catch(()=>{
+      pendingImages[slot] = null;
+      pendingOriginals[slot] = null;
+      renderPreview();
+    });
+    pendingImageJobs.push(job);
+  }
+  fileInput.value = '';
+}
+
+// 只讀檔、解碼一次，同時產生「縮圖版」與容量受限的「保留原圖版」，
+// 避免手機隨拍動輒 3~10MB 的原始檔案整包塞進儲存空間（單一 key 上限 5MB），
+// 導致單張圖片就存檔失敗。
+function processImage(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      const img = new Image();
+      img.onload = ()=>{
+        try{
+          const thumb = drawToDataUrl(img, 900, 0.72);
+          // 「原圖」在此仍會依比例縮小到最長邊 2000px、較高畫質，
+          // 保留放大細看／下載的品質，同時確保單張照片穩穩存得進去。
+          const original = drawToDataUrl(img, 2000, 0.88);
+          resolve({ thumb, original });
+        }catch(err){ reject(err); }
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function drawToDataUrl(img, maxW, quality){
+  const scale = Math.min(1, maxW / img.width);
+  const w = Math.round(img.width * scale);
+  const h = Math.round(img.height * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+  return canvas.toDataURL('image/jpeg', quality);
+}
+
+function renderPreview(){
+  previewRow.innerHTML = '';
+  pendingImages.forEach((src, i)=>{
+    const div = document.createElement('div');
+    div.className = 'preview-thumb';
+    div.innerHTML = `<img src="${src}"><button data-i="${i}">✕</button>`;
+    div.querySelector('button').addEventListener('click', ()=>{
+      pendingImages.splice(i,1);
+      pendingOriginals.splice(i,1);
+      pendingImageJobs.splice(i,1);
+      renderPreview();
+    });
+    previewRow.appendChild(div);
+  });
+}
+
+videoDropzone.addEventListener('click', ()=>{
+  if(!gDriveAccessToken){ openDriveSettings(); return; }
+  videoFileInput.click();
+});
+videoDropzone.addEventListener('dragover', e=>{ e.preventDefault(); if(gDriveAccessToken) videoDropzone.classList.add('drag'); });
+videoDropzone.addEventListener('dragleave', ()=> videoDropzone.classList.remove('drag'));
+videoDropzone.addEventListener('drop', e=>{
+  e.preventDefault(); videoDropzone.classList.remove('drag');
+  if(!gDriveAccessToken){ openDriveSettings(); return; }
+  handleVideoFiles(e.dataTransfer.files);
+});
+videoFileInput.addEventListener('change', e=> handleVideoFiles(e.target.files));
+
+function handleVideoFiles(fileList){
+  const files = Array.from(fileList).filter(f=>f.type.startsWith('video/'));
+  for(const f of files){
+    if(pendingVideos.length >= MAX_VIDEOS) break;
+    const item = {
+      localId: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+      name: f.name,
+      previewUrl: URL.createObjectURL(f),
+      status: 'uploading',
+      drive: null
+    };
+    pendingVideos.push(item);
+    renderVideoPreview();
+    uploadFileToDrive(f, f.name, f.type, null).then(driveFile=>{
+      item.status = 'done';
+      item.drive = driveFile;
+      renderVideoPreview();
+    }).catch(()=>{
+      item.status = 'error';
+      renderVideoPreview();
+    });
+  }
+  videoFileInput.value = '';
+}
+
+function renderVideoPreview(){
+  videoPreviewRow.innerHTML = '';
+  pendingVideos.forEach((item, i)=>{
+    const div = document.createElement('div');
+    div.className = 'video-thumb';
+    const statusText = item.status === 'uploading' ? '上傳中…' : item.status === 'error' ? '上傳失敗' : '已備份到雲端';
+    const statusClass = item.status === 'error' ? 'err' : '';
+    div.innerHTML = `
+      <video src="${item.previewUrl}" muted></video>
+      <div class="vt-name">${escapeHtml(item.name)}</div>
+      <div class="vt-status ${statusClass}">${statusText}</div>
+      <button data-i="${i}">✕</button>`;
+    div.querySelector('button').addEventListener('click', ()=>{
+      URL.revokeObjectURL(item.previewUrl);
+      pendingVideos.splice(i,1);
+      renderVideoPreview();
+    });
+    videoPreviewRow.appendChild(div);
+  });
+}
+
+async function loadEntries(){
+  try{
+    const idxRes = await window.storage.get(ENTRY_INDEX_KEY, false).catch(()=>null);
+    const ids = idxRes && idxRes.value ? JSON.parse(idxRes.value) : null;
+    if(ids){
+      const loaded = await Promise.all(ids.map(async id=>{
+        try{
+          const r = await window.storage.get(ENTRY_KEY_PREFIX + id, false);
+          return r && r.value ? JSON.parse(r.value) : null;
+        }catch(err){ return null; }
+      }));
+      entries = loaded.filter(Boolean);
+    } else {
+      // 相容舊版：舊格式把所有文章塞在同一把 key 裡，容易因為圖片太多超過
+      // 單一 key 的容量上限而存不進去。偵測到舊格式時自動搬遷成新格式。
+      const legacy = await window.storage.get(LEGACY_STORAGE_KEY, false).catch(()=>null);
+      entries = legacy && legacy.value ? JSON.parse(legacy.value) : [];
+      if(entries.length){
+        await migrateLegacyEntries();
+      }
+    }
+  }catch(err){
+    entries = [];
+  }
+  renderEntries();
+}
+
+async function migrateLegacyEntries(){
+  try{
+    for(const e of entries){
+      await window.storage.set(ENTRY_KEY_PREFIX + e.id, JSON.stringify(e), false);
+    }
+    await window.storage.set(ENTRY_INDEX_KEY, JSON.stringify(entries.map(e=>e.id)), false);
+  }catch(err){
+    console.error('搬遷舊版資料失敗', err);
+  }
+}
+
+async function persistIndex(){
+  try{
+    await window.storage.set(ENTRY_INDEX_KEY, JSON.stringify(entries.map(e=>e.id)), false);
+  }catch(err){
+    console.error('索引儲存失敗', err);
+  }
+}
+
+async function persistEntry(entry){
+  await window.storage.set(ENTRY_KEY_PREFIX + entry.id, JSON.stringify(entry), false);
+}
+
+async function deleteEntryStorage(id){
+  try{
+    await window.storage.delete(ENTRY_KEY_PREFIX + id, false);
+  }catch(err){}
+}
+
+function buildTweetText(entry){
+  const MAX = 260;
+  let t = (entry.text || '').trim();
+  if(!t) return `${entry.date} 的一頁手記。`;
+  if(t.length > MAX) t = t.slice(0, MAX) + '…';
+  return t;
+}
+
+function openXShareWindow(preOpenedWin, entry){
+  const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(buildTweetText(entry));
+  if(preOpenedWin && !preOpenedWin.closed){
+    preOpenedWin.location.href = url;
+  } else {
+    window.open(url, '_blank', 'noopener');
+  }
+}
+
+function extFromMime(mime){
+  if(mime === 'image/png') return 'png';
+  if(mime === 'image/webp') return 'webp';
+  if(mime === 'image/gif') return 'gif';
+  return 'jpg';
+}
+
+// 同步把 data URL 轉成 Blob（不用 fetch）。
+// navigator.share 必須在使用者手勢觸發的同一輪呼叫，中間只要經過一次
+// 非同步等待（例如 await fetch(...)），部分瀏覽器（尤其 iOS Safari）
+// 就會判定手勢已失效而拒絕分享，導致悄悄退回成不含圖片的純文字分享。
+function dataUrlToBlobSync(dataUrl){
+  const commaIdx = dataUrl.indexOf(',');
+  const header = dataUrl.slice(0, commaIdx);
+  const base64 = dataUrl.slice(commaIdx + 1);
+  const mimeMatch = /data:([^;]+);base64/.exec(header);
+  const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+  const binary = atob(base64);
+  const len = binary.length;
+  const bytes = new Uint8Array(len);
+  for(let i=0;i<len;i++){ bytes[i] = binary.charCodeAt(i); }
+  return new Blob([bytes], { type: mime });
+}
+
+// 把圖片複製到系統剪貼簿，讓使用者之後能在 X 的發文框裡直接「貼上」。
+// 這一步必須是使用者手勢觸發後、盡快呼叫，避免部分瀏覽器判定手勢已失效。
+async function copyImagesToClipboard(images){
+  if(!navigator.clipboard || !navigator.clipboard.write || typeof ClipboardItem === 'undefined') return false;
+  try{
+    const items = images.map(src=>{
+      const blob = dataUrlToBlobSync(src);
+      const type = blob.type || 'image/png';
+      return new ClipboardItem({ [type]: blob });
+    });
+    await navigator.clipboard.write(items);
+    return true;
+  }catch(err){
+    console.warn('複製圖片到剪貼簿失敗', err);
+    return false;
+  }
+}
+
+// 嘗試透過系統分享（Web Share API）把文字＋圖片一起帶到 X App／分享面板；
+// 若裝置不支援（多半是電腦瀏覽器），改為把圖片複製到剪貼簿，
+// 再帶著文字跳轉到 X 發文頁面，使用者只需在發文框裡「貼上」圖片即可。
+async function shareEntryToX(entry, preOpenedWin){
+  const text = buildTweetText(entry);
+  const hasImages = entry.images && entry.images.length > 0;
+
+  if(hasImages && navigator.share){
+    try{
+      // 全程同步轉檔，中間不 await 任何東西，確保呼叫 navigator.share 時
+      // 使用者手勢仍然有效。
+      const files = entry.images.map((src, i)=>{
+        const blob = dataUrlToBlobSync(src);
+        const ext = extFromMime(blob.type);
+        return new File([blob], `diary-${entry.date}-${i+1}.${ext}`, { type: blob.type || 'image/jpeg' });
+      });
+      const shareData = { text, files };
+      if(!navigator.canShare || navigator.canShare(shareData)){
+        if(preOpenedWin && !preOpenedWin.closed) preOpenedWin.close();
+        await navigator.share(shareData);
+        return;
+      }
+    }catch(err){
+      if(err && err.name === 'AbortError'){
+        // 使用者自己取消了系統分享面板，不再強制跳出純文字視窗
+        if(preOpenedWin && !preOpenedWin.closed) preOpenedWin.close();
+        return;
+      }
+      console.warn('無法透過系統分享附上圖片，改用複製圖片＋跳轉 X', err);
+    }
+  }
+
+  if(hasImages){
+    const copied = await copyImagesToClipboard(entry.images);
+    if(copied){
+      showToast(entry.images.length > 1
+        ? '圖片已複製到剪貼簿，即將前往 X — 貼上文字後記得再貼上圖片喔'
+        : '圖片已複製到剪貼簿，即將前往 X — 記得在發文框裡貼上圖片喔');
+    }
+  }
+
+  openXShareWindow(preOpenedWin, entry);
+}
+
+saveBtn.addEventListener('click', async ()=>{
+  const text = textInput.value.trim();
+  if(!text && pendingImages.length===0 && pendingVideos.length===0 && !selectedQuote) return;
+  if(pendingVideos.some(v=>v.status==='uploading')){
+    showModal('影片還在上傳到雲端硬碟，請稍候片刻再蓋上封蠟。', async ()=>{});
+    return;
+  }
+  saveBtn.disabled = true;
+  let entry = null;
+  try{
+    if(pendingImageJobs.length){
+      await Promise.all(pendingImageJobs);
+    }
+    const wantShareX = xShareToggle.checked && !!text;
+    // 若有圖片且裝置支援系統分享，交給 navigator.share 處理（不會被彈窗攔截）；
+    // 否則才需要先同步開啟空白視窗，避免瀏覽器封鎖之後才導向的分享連結。
+    const willUseWebShare = wantShareX && pendingImages.length > 0 && !!navigator.share;
+    const xPreWin = (wantShareX && !willUseWebShare) ? window.open('', '_blank') : null;
+    const finishedVideos = pendingVideos.filter(v=>v.status==='done' && v.drive).map(v=>v.drive);
+    // 過濾掉真的處理失敗（仍為 null）的圖片，並讓縮圖與原圖保持同一份索引順序
+    const validImageIdxs = pendingImages.map((v,i)=> v ? i : -1).filter(i=> i!==-1);
+    const finalImages = validImageIdxs.map(i=>pendingImages[i]);
+    const finalOriginals = validImageIdxs.map(i=>pendingOriginals[i]);
+    entry = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+      date: dateInput.value || todayStr(),
+      text,
+      images: finalImages,
+      videos: finishedVideos,
+      quote: selectedQuote ? { id: selectedQuote.id, date: selectedQuote.date, text: selectedQuote.text } : null,
+      wax: { a: currentWax.a, b: currentWax.b },
+      createdAt: Date.now()
+    };
+    entries.unshift(entry);
+    if(wantShareX){
+      // 盡量緊接著 entry 建立就呼叫分享，不等圖片存檔動作完成，
+      // 降低使用者手勢在 navigator.share 呼叫前失效的機會。
+      shareEntryToX(entry, xPreWin);
+    }
+    // 真正寫進儲存空間的兩步：任一步失敗都會丟出例外，進到下面的 catch，
+    // 不會讓使用者以為存好了、其實根本沒存進去。
+    await persistEntry(entry);
+    await persistIndex();
+
+    // 原圖另外分開存放（避免把主要日記資料撐太大），這屬於錦上添花的備份，
+    // 存不進去也不影響前面已經成功存好的文章本身。
+    finalOriginals.forEach((orig, idx)=>{
+      if(!orig) return;
+      if(orig.length > 4.5 * 1024 * 1024) return; // 保險：極端情況仍太大就不存原圖備份，縮圖版本已經存好了
+      window.storage.set(`orig-img:${entry.id}-${idx}`, orig, false).catch(()=>{});
+    });
+    if(gDriveAccessToken && text){
+      uploadTextToDrive(`${entry.date} 手記.txt`, text).catch(()=>{});
+    }
+    if(gDriveAccessToken){
+      uploadEntryBackup(entry).then(f=>{
+        if(f && f.id){
+          entry.driveBackupId = f.id;
+          persistEntry(entry).catch(()=>{});
+        }
+      }).catch(err=> console.warn('存檔時雲端備份失敗：', entry.id, err));
+    }
+
+    // 走到這裡代表真的存成功了，才清空手上正在寫的草稿
+    textInput.value = '';
+    charCount.textContent = '0 字';
+    pendingImages = [];
+    pendingOriginals = [];
+    pendingImageJobs = [];
+    renderPreview();
+    pendingVideos.forEach(v=> URL.revokeObjectURL(v.previewUrl));
+    pendingVideos = [];
+    renderVideoPreview();
+    selectedQuote = null;
+    renderQuotePreview();
+    dateInput.value = todayStr();
+    currentWax = { a: PRESET_COLORS[0].color, b: PRESET_COLORS[0].color };
+    applyWaxPreview();
+    renderSealPattern();
+    renderEntries();
+    jumpToEntry('entry-' + entry.id);
+  }catch(err){
+    console.error('封蠟存檔失敗', err);
+    // 存檔真的失敗了：把剛剛加進記憶體的那一筆退回去，避免畫面上看起來存了、
+    // 其實沒真的寫進儲存空間；也不清空使用者還沒存到的文字／圖片草稿。
+    if(entry){
+      entries = entries.filter(e=>e.id!==entry.id);
+      renderEntries();
+    }
+    const detail = (err && err.message) ? err.message : String(err);
+    showModal(`這一頁存檔失敗了：${escapeHtml(detail)}<br>可能是圖片太大或太多，要不要試著減少圖片數量再存一次？`, async ()=>{});
+  }finally{
+    saveBtn.disabled = false;
+  }
+});
+
+const weekChars = ['日','一','二','三','四','五','六'];
+
+function renderEntries(){
+  if(entries.length===0){
+    searchResultCount.style.display = 'none';
+    entriesContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="glyph">未</div>
+        <p>還沒有落筆的一頁。<br>寫下第一段文字，蓋上今天的封蠟吧。</p>
+      </div>`;
+    return;
+  }
+
+  let list = entries;
+  if(searchQuery){
+    list = entries.filter(e=>{
+      const inText = entryBodyText(e).toLowerCase().includes(searchQuery);
+      const inDate = e.date && e.date.toLowerCase().includes(searchQuery);
+      const inWax = waxCategoryName(e).toLowerCase().includes(searchQuery);
+      return inText || inDate || inWax;
+    });
+    searchResultCount.style.display = 'block';
+    searchResultCount.textContent = list.length > 0
+      ? `找到 ${list.length} 篇符合的紀錄`
+      : '沒有找到符合的紀錄';
+  } else {
+    searchResultCount.style.display = 'none';
+  }
+
+  if(list.length===0){
+    entriesContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="glyph">尋</div>
+        <p>沒有找到符合「${escapeHtml(searchInput.value.trim())}」的紀錄。</p>
+      </div>`;
+    return;
+  }
+
+  entriesContainer.innerHTML = '';
+  list.forEach(entry=>{
+    const d = new Date(entry.date + 'T00:00:00');
+    const validDate = !isNaN(d.getTime());
+    const y = validDate ? d.getFullYear() : '';
+    const md = validDate ? (d.getMonth()+1)+'/'+d.getDate() : entry.date;
+    const w = validDate ? '週'+weekChars[d.getDay()] : '';
+
+    const el = document.createElement('div');
+    el.className = 'entry';
+    el.id = 'entry-' + entry.id;
+    const floatDur = (6 + (entry.id.charCodeAt(0)%4)).toFixed(1);
+    const floatDelay = -((entry.id.charCodeAt(entry.id.length-1)%5)).toFixed(1);
+    el.style.animationDuration = floatDur + 's';
+    el.style.animationDelay = floatDelay + 's';
+    const waxA = (entry.wax && entry.wax.a) || PRESET_COLORS[0].color;
+    const waxB = (entry.wax && entry.wax.b) || waxA;
+    el.innerHTML = `
+      <div class="stamp" title="按下封蠟，呈現這篇文章" style="--wax-a:${waxA};--wax-b:${waxB};">
+        ${seededSealPatternFor(entry)}
+        <div class="y">${y}</div>
+        <div class="md">${md}</div>
+        <div class="w">${w}</div>
+      </div>
+      <div class="entry-paper">
+        ${entry.quote ? `<div class="entry-quote${entry.quote.id ? ' eq-link':''}" ${entry.quote.id ? `data-target="entry-${entry.quote.id}"` : ''}><div class="eq-date">引自 ${entry.quote.date}${entry.quote.id ? ' →' : ''}</div><div class="eq-text">${escapeHtml(entry.quote.text)}${entry.quote.text.length>=120?'…':''}</div></div>` : ''}
+        ${entry.text ? `<div class="entry-text">${escapeHtml(entry.text)}</div>` : ''}
+        ${entry.images && entry.images.length ? `<div class="entry-images">${entry.images.map((src, idx)=>`<div class="photo" data-entry-id="${entry.id}" data-idx="${idx}"><img src="${src}"></div>`).join('')}</div>` : ''}
+        ${entry.videos && entry.videos.length ? `<div class="entry-videos">${entry.videos.map(v=>`<a class="entry-video-link" href="${v.webViewLink}" target="_blank" rel="noopener">🎬 ${escapeHtml(v.name)}<span class="drive-badge">☁ 於雲端硬碟開啟 →</span></a>`).join('')}</div>` : ''}
+        <div class="entry-actions">
+          <button class="entry-quote-btn" data-id="${entry.id}">↩ 引用這篇</button>
+          <button class="entry-wax-btn" data-id="${entry.id}" title="更改這篇的封蠟顏色"><span class="wax-btn-dot" style="background:${waxA};"></span>換封蠟顏色</button>
+          <button class="entry-share-x" data-id="${entry.id}">𝕏 分享</button>
+          <button class="entry-del" data-id="${entry.id}">刪除這一頁</button>
+        </div>
+      </div>
+    `;
+    el.querySelector('.stamp').addEventListener('click', ()=> jumpToEntry('entry-' + entry.id));
+    const quoteBlock = el.querySelector('.eq-link');
+    if(quoteBlock){
+      quoteBlock.addEventListener('click', ()=>{
+        const targetId = quoteBlock.getAttribute('data-target');
+        jumpToEntry(targetId);
+      });
+    }
+    el.querySelector('.entry-quote-btn').addEventListener('click', ()=> quickQuote(entry.id));
+    el.querySelector('.entry-wax-btn').addEventListener('click', ()=> changeEntryWaxColor(entry));
+    el.querySelector('.entry-share-x').addEventListener('click', ()=>{
+      const hasImages = entry.images && entry.images.length > 0;
+      const willUseWebShare = hasImages && !!navigator.share;
+      const preWin = willUseWebShare ? null : window.open('', '_blank');
+      shareEntryToX(entry, preWin);
+    });
+    el.querySelectorAll('.photo').forEach(photoEl=>{
+      photoEl.addEventListener('click', ()=>{
+        const idx = Number(photoEl.getAttribute('data-idx'));
+        const fallbackSrc = entry.images[idx];
+        openImageLightbox(entry.id, idx, fallbackSrc);
+      });
+    });
+    el.querySelector('.entry-del').addEventListener('click', ()=> confirmDelete(entry.id));
+    entriesContainer.appendChild(el);
+  });
+}
+
+function jumpToEntry(targetId){
+  const target = document.getElementById(targetId);
+  if(!target){
+    showModal('這篇被引用的文章已經不在了。', async ()=>{});
+    return;
+  }
+  target.scrollIntoView({behavior:'smooth', block:'center'});
+  target.classList.add('entry-flash');
+  setTimeout(()=> target.classList.remove('entry-flash'), 1600);
+}
+
+function quickQuote(entryId){
+  const entry = entries.find(e=>e.id===entryId);
+  if(!entry) return;
+  selectedQuote = { id: entry.id, date: entry.date, text: entryBodyText(entry).slice(0,120) };
+  renderQuotePreview();
+  document.querySelector('.composer').scrollIntoView({behavior:'smooth', block:'start'});
+  textInput.focus();
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// 開啟圖片燈箱：先顯示目前已存的（可能是縮圖版）圖片，
+// 同時嘗試向背景另外存放的原圖資料要圖，拿得到就換成原圖並允許下載原圖。
+async function openImageLightbox(entryId, idx, fallbackSrc){
+  lightboxImg.src = fallbackSrc;
+  lightboxNote.textContent = '讀取原圖中…';
+  lightboxDownloadBtn.dataset.src = fallbackSrc;
+  lightboxDownloadBtn.dataset.entryId = entryId;
+  lightboxDownloadBtn.dataset.idx = String(idx);
+  imageLightbox.classList.add('show');
+
+  try{
+    const key = `orig-img:${entryId}-${idx}`;
+    const res = await window.storage.get(key, false);
+    if(res && res.value){
+      lightboxImg.src = res.value;
+      lightboxDownloadBtn.dataset.src = res.value;
+      lightboxNote.textContent = '原圖';
+    } else {
+      lightboxNote.textContent = '（找不到原圖，顯示的是站上保存的縮圖版本）';
+    }
+  }catch(err){
+    lightboxNote.textContent = '（找不到原圖，顯示的是站上保存的縮圖版本）';
+  }
+}
+
+function closeImageLightbox(){
+  imageLightbox.classList.remove('show');
+  lightboxImg.src = '';
+}
+
+lightboxCloseBtn.addEventListener('click', closeImageLightbox);
+imageLightbox.addEventListener('click', (e)=>{
+  if(e.target === imageLightbox) closeImageLightbox();
+});
+lightboxDownloadBtn.addEventListener('click', ()=>{
+  const src = lightboxDownloadBtn.dataset.src;
+  if(!src) return;
+  const idx = lightboxDownloadBtn.dataset.idx;
+  const mimeMatch = /^data:image\/([a-zA-Z0-9+.-]+);/.exec(src);
+  const ext = mimeMatch ? mimeMatch[1].replace('jpeg','jpg') : 'jpg';
+  const a = document.createElement('a');
+  a.href = src;
+  a.download = `diary-image-${lightboxDownloadBtn.dataset.entryId}-${idx}.${ext}`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+});
+
+function showModal(message, onConfirm){
+  modalRoot.innerHTML = `
+    <div class="modal-bg">
+      <div class="modal">
+        <p>${message}</p>
+        <div class="modal-actions">
+          <button class="cancel">取消</button>
+          <button class="confirm">確定</button>
+        </div>
+      </div>
+    </div>`;
+  modalRoot.querySelector('.cancel').addEventListener('click', ()=> modalRoot.innerHTML='');
+  modalRoot.querySelector('.confirm').addEventListener('click', async ()=>{
+    modalRoot.innerHTML='';
+    await onConfirm();
+  });
+}
+
+function confirmDelete(id){
+  showModal('確定要刪除這一頁紀錄嗎？此動作無法復原。', async ()=>{
+    const target = entries.find(e=>e.id===id);
+    entries = entries.filter(e=>e.id!==id);
+    await persistIndex();
+    await deleteEntryStorage(id);
+    if(target && target.images){
+      target.images.forEach((_, idx)=>{
+        window.storage.delete(`orig-img:${id}-${idx}`, false).catch(()=>{});
+      });
+    }
+    if(target && target.driveBackupId){
+      deleteDriveFile(target.driveBackupId).catch(()=>{});
+    }
+    renderEntries();
+  });
+}
+
+clearAllBtn.addEventListener('click', ()=>{
+  if(entries.length===0) return;
+  showModal('確定要清空所有日記紀錄嗎？此動作無法復原。', async ()=>{
+    const targets = entries.slice();
+    const idsToDelete = entries.map(e=>e.id);
+    entries = [];
+    await persistIndex();
+    idsToDelete.forEach(id=> deleteEntryStorage(id));
+    targets.forEach(t=>{
+      if(t.driveBackupId) deleteDriveFile(t.driveBackupId).catch(()=>{});
+    });
+    renderEntries();
+  });
+});
+
+loadEntries().then(()=>{ trySilentDriveReconnect(); });
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(err=>{
+      console.warn('Service worker 註冊失敗：', err);
+    });
+  });
+}
+</script>
+</body>
+</html>
